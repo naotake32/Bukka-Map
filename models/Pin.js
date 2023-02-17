@@ -6,7 +6,7 @@ const PinSchema = new mongoose.Schema({
         require: true,
         min: 3
     },
-    title: {
+    product: {
         type: String,
         require: true,
         min:3
@@ -16,11 +16,10 @@ const PinSchema = new mongoose.Schema({
         require: true,
         min: 3
     },
-    rating:{
+    price:{
         type: Number,
         require: true,
         min: 0,
-        max: 5,
     },
     lat:{
         type: Number,
