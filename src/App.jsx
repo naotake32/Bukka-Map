@@ -9,29 +9,14 @@ import {format} from "timeago.js";
 function App() {
   const currentUser = "aaaa"
   const [showPopup, setShowPopup] = React.useState(true);
-  const [pins, setPins] = useState([
-    {
-      
-        "username": "aaaa",
-        "product": "Apple",
-        "desc": "It was a good deal!",
-        "price": 2.5,
-        "lat": 40,
-        "long": -100,
-        "_id": "63effb6ac82e4c908a5cc0b3",
-        "createdAt": "2023-02-17T22:10:50.978Z",
-        "updatedAt": "2023-02-17T22:10:50.978Z",
-        "__v": 0
-      
-    }
-  ]);
+  const [pins, setPins] = useState([]);
   const [newPlace, setNewPlace] = useState(null);
   const [viewport, setViewport] = useState({
     latitude: 47.040182,
     longitude: 17.071727,
     zoom: 4,
   });
-  // const [currentPlaceId, setCurrentPlaceId] = useState(null);
+  const [currentPlaceId, setCurrentPlaceId] = useState(null);
 
   useEffect(()=>{
     const getPins = async ()=> {
@@ -45,9 +30,14 @@ function App() {
     getPins();
   },[])
 
-  // const handleMarkerClick = (id)=>{
-  //   setCurrentPlaceId(id)
-  // }
+  const handleMarkerClick = (id)=>{
+    console.log(id);
+    setCurrentPlaceId(id)
+    setShowPopup(true);
+  }
+
+  useEffect(()=>{
+    console.log(showPopup )},[showPopup ]);
 
     const handleAddClick = (e) => {
       console.log(e);
@@ -70,7 +60,6 @@ function App() {
     {pins.map((pin)=>(
       <>
     <Marker longitude={-100} latitude={40} anchor="bottom" >
-          <Room />
       <Room
         style={{
            fontSize: 7 * viewport.zoom,
@@ -83,8 +72,8 @@ function App() {
     </Marker>
 
     {/* show popup */}
-
-    {showPopup && (
+    {console.log(pin._id === currentPlaceId)}
+    {pin._id === currentPlaceId && showPopup && (
       <Popup longitude={pin.long} latitude={pin.lat}
         anchor="bottom"
         onClose={() => setShowPopup(false)}>
@@ -98,7 +87,8 @@ function App() {
           <span className="username">Posted by <b>{pin.username}</b></span>
           <span className="date">{format(pin.createdAt)}</span>
         </div>
-      </Popup>)}
+      </Popup>)
+    }
       </>
     ))}
     </Map>
