@@ -36,12 +36,20 @@ function App() {
     setShowPopup(true);
   }
 
-  useEffect(()=>{
-    console.log(showPopup )},[showPopup ]);
+  const handleAddClick = ()=> {
+    console.log("hello");
+    // const [long, lat] = e.lngLat.toArray();
+    // setNewPlace([
+    //   lat,
+    //   long
+    // ])
+  }
 
-    const handleAddClick = (e) => {
-      console.log(e);
-    }
+  const noticeClick = () => {
+    console.log("hello");
+  }
+
+
   return (
     <>
 
@@ -55,11 +63,20 @@ function App() {
       mapStyle="mapbox://styles/mapbox/streets-v9"
       mapboxAccessToken={import.meta.env.VITE_APP_MAPBOX}
       onDblClick = {handleAddClick}
+      onClick={noticeClick}
       >
-    {/* show icon */}
-    {pins.map((pin)=>(
+      {/* show icon */}
+      {pins.map((pin)=>(
       <>
-    <Marker longitude={-100} latitude={40} anchor="bottom" >
+      <Marker
+              longitude={-100}
+              latitude={40}
+              anchor="bottom"
+              onClick={(e) => {
+                e.originalEvent.stopPropagation();
+                handleMarkerClick(pin._id, pin.lat, pin.long);
+              }}
+      >
       <Room
         style={{
            fontSize: 7 * viewport.zoom,
@@ -67,16 +84,20 @@ function App() {
              currentUser === pin.username ? "tomato" : "slateblue",
            cursor: "pointer",
          }}
-         onClick={() => handleMarkerClick(pin._id, pin.lat, pin.long)}
+          onClick={() => handleMarkerClick(pin._id, pin.lat, pin.long)}
       />
     </Marker>
 
     {/* show popup */}
     {console.log(pin._id === currentPlaceId)}
     {pin._id === currentPlaceId && showPopup && (
-      <Popup longitude={pin.long} latitude={pin.lat}
+      <Popup
+        longitude={pin.long}
+        latitude={pin.lat}
         anchor="bottom"
-        onClose={() => setShowPopup(false)}>
+        onClose={() => setShowPopup(false)}
+        //closeOnClick={false}
+>
         <div className='card'>
           <label>Product Name</label>
           <h4 className="product">{pin.product}</h4>
@@ -91,6 +112,17 @@ function App() {
     }
       </>
     ))}
+    {newPlace &&
+    <Popup
+        longitude={newPlace.long}
+        latitude={newPlace.lat}
+        closeButton={true}
+        closeOnClick={false}
+        anchor="bottom"
+        onClose={() => setShowPopup(false)}
+    >
+      </Popup>
+     }
     </Map>
 
 
