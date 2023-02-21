@@ -16,13 +16,13 @@ export default function Login({ setShowLogin, setCurrentUser,myStorage }) {
       password: passwordRef.current.value,
     };
     try {
-      const res = await axios.post("/users/login", user);
+      const res = await axios.post("api/users/login", user);
       setCurrentUser(res.data.username);
       myStorage.setItem('user', res.data.username);
       setShowLogin(false)
     } catch (err) {
       setError(true);
-      console.log(user);
+      console.log(err,user);
     }
   };
 

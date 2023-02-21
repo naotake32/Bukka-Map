@@ -76,6 +76,12 @@ function App() {
     console.log(newPlace);
   }
 
+  const handleLogout = () => {
+    setCurrentUser(null);
+    myStorage.removeItem("user");
+  };
+
+
 
   return (
     <>
@@ -190,7 +196,9 @@ function App() {
     </Map>
 
     {currentUser ? (
-      <button className="button logout">Logout</button>
+      <button className="button logout" onClick={handleLogout}>
+        Log out
+      </button>
     ) : (
       <div className="buttons">
         <button className="button login" 
