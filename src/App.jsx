@@ -6,10 +6,11 @@ import "../src/App.css";
 import axios from "axios";
 import {format} from "timeago.js";
 import Register from "./componetns/Register";
-// import Login from "./componetns/Login";
+ import Login from "./componetns/Login";
 
 function App() {
-  const [currentUser,setCurrentUser] = useState(null);
+  const myStorage = window.localStorage;
+  const [currentUser,setCurrentUser] = useState(myStorage.getItem("user"));
   const [showPopup, setShowPopup] = React.useState(true);
   const [pins, setPins] = useState([]);
   const [newPlace, setNewPlace] = useState("");
@@ -179,9 +180,13 @@ function App() {
   </Popup>
      }
      {showRegister &&<Register setShowRegister={setShowRegister}/>}
-     {/* {showLogin && (
-          <Login setShowLogin={setShowLogin}/>
-        )} */}
+     {showLogin && (
+          <Login
+            setShowLogin={setShowLogin}
+            setCurrentUser={setCurrentUser}
+            myStorage={myStorage}
+          />
+        )}
     </Map>
 
     {currentUser ? (

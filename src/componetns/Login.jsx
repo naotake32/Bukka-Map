@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import "./login.css";
 
-export default function Login({ setShowLogin, setCurrentUsername,myStorage }) {
+export default function Login({ setShowLogin, setCurrentUser,myStorage }) {
   const [error, setError] = useState(false);
   const usernameRef = useRef();
   const passwordRef = useRef();
@@ -17,25 +17,26 @@ export default function Login({ setShowLogin, setCurrentUsername,myStorage }) {
     };
     try {
       const res = await axios.post("/users/login", user);
-      setCurrentUsername(res.data.username);
+      setCurrentUser(res.data.username);
       myStorage.setItem('user', res.data.username);
       setShowLogin(false)
     } catch (err) {
       setError(true);
+      console.log(user);
     }
   };
 
   return (
     <div className="loginContainer">
       <div className="logo">
-        <Room className="logoIcon" />
-        <span>LamaPin</span>
+        <ShoppingBasketIcon className="logoIcon" />
+        <span>Bukka-Map</span>
       </div>
       <form onSubmit={handleSubmit}>
         <input autoFocus placeholder="username" ref={usernameRef} />
         <input
           type="password"
-          min="6"
+          minlength="8"
           placeholder="password"
           ref={passwordRef}
         />
@@ -44,7 +45,7 @@ export default function Login({ setShowLogin, setCurrentUsername,myStorage }) {
         </button>
         {error && <span className="failure">Something went wrong!</span>}
       </form>
-      <Cancel className="loginCancel" onClick={() => setShowLogin(false)} />
+      <CancelIcon className="loginCancel" onClick={() => setShowLogin(false)} />
     </div>
   );
 }

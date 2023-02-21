@@ -25,6 +25,7 @@ export default function Register({setShowRegister}) {
             console.log(newUser);
             setSuccess(true);
         }catch(err){
+            console.log(err);
             setError(true);
         }
 
