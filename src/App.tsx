@@ -1,19 +1,37 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import Map, {Marker, Popup} from 'react-map-gl';
+import Map, {Marker, Popup,MapboxEvent} from 'react-map-gl';
 import "../src/App.css";
 import axios from "axios";
 import {format} from "timeago.js";
 import Register from "./componetns/Register";
- import Login from "./componetns/Login";
+import Login from "./componetns/Login";
+import Sidebar from "./componetns/Sidebar";// 追加
+import AuthWrapper from "./componetns/Authwrapper"; // 追加
+
+
+type Pin = {
+  _id: string;
+  username: string;
+  product: string;
+  price: number;
+  desc: string;
+  lat: number;
+  long: number;
+  createdAt: number;
+}
+type Geoloc= {
+  lat: number;
+  long: number;
+}
 
 function App() {
   const myStorage = window.localStorage;
   const [currentUser,setCurrentUser] = useState(myStorage.getItem("user"));
   const [showPopup, setShowPopup] = React.useState(true);
-  const [pins, setPins] = useState([]);
-  const [newPlace, setNewPlace] = useState("");
+  const [pins, setPins] = useState<Pin[]>([]);
+  const [newPlace, setNewPlace] = useState<Geoloc>();
   const [product, setProduct] = useState("");
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
@@ -25,6 +43,7 @@ function App() {
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [isSale, setIsSale] = useState(false);
 
   useEffect(()=>{
     const getPins = async ()=> {
@@ -38,11 +57,11 @@ function App() {
     getPins();
   },[])
 
-  const handleMarkerClick = (id, lat, long)=>{
+  const handleMarkerClick = (id: string, lat: number, long: number)=>{
     console.log(id);
     setCurrentPlaceId(id)
     setShowPopup(true);
-    setViewport({...viewport, latitude: lat, longtitude: long})
+    setViewport({...viewport, latitude: lat, longitude: long})
     console.log(viewport);
   }
 
@@ -57,8 +76,8 @@ function App() {
       product,
       desc,
       price,
-      lat: newPlace.lat,
-      long: newPlace.long,
+      lat: newPlace?.lat,
+      long: newPlace?.long,
     };
 
     try {
@@ -70,7 +89,7 @@ function App() {
     }
   };
 
-  const noticeClick = (e) =>{
+  const noticeClick = (e: any) =>{
     console.log(e.lngLat.lng, e.lngLat.lat);
     setNewPlace({long : e.lngLat.lng,lat: e.lngLat.lat})
     console.log(newPlace);
@@ -136,6 +155,7 @@ function App() {
         <div className='card'>
           <label>Product Name</label>
           <h4 className="product">{pin.product}</h4>
+          <p>sale{}</p>
           <label>Price</label>
           <p>{pin.price}$</p>
           <label>Description</label>
@@ -194,6 +214,16 @@ function App() {
           />
         )}
     </Map>
+
+    <AuthWrapper
+        showRegister={showRegister}
+        setShowRegister={setShowRegister}
+        showLogin={showLogin}
+        setShowLogin={setShowLogin}
+        setCurrentUser={setCurrentUser}
+        myStorage={myStorage}
+      />
+      <Sidebar pins={pins} />
 
     {currentUser ? (
       <button className="button logout" onClick={handleLogout}>

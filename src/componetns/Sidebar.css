@@ -1,0 +1,30 @@
+.sidebar {
+    width: 300px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    overflow-y: scroll;
+  }
+  
+  .sidebar-title {
+    margin-bottom: 10px;
+  }
+  
+  .post-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .post-item {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 10px 0;
+  }
+  
+  .post-item:last-child {
+    border-bottom: none;
+  }
+  
