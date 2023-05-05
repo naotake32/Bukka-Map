@@ -9,6 +9,7 @@ import Register from "./componetns/Register";
 import Login from "./componetns/Login";
 import Sidebar from "./componetns/Sidebar";// 追加
 import AuthWrapper from "./componetns/Authwrapper"; // 追加
+import SearchBar from "./componetns/SearchBar"; // 追加
 
 
 type Pin = {
@@ -44,6 +45,8 @@ function App() {
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [isSale, setIsSale] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 769);
 
   useEffect(()=>{
     const getPins = async ()=> {
@@ -55,6 +58,16 @@ function App() {
       }
     }
     getPins();
+    console.log('Mapbox Access Token:', import.meta.env.VITE_APP_MAPBOX);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 769);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   },[])
 
   const handleMarkerClick = (id: string, lat: number, long: number)=>{
@@ -100,18 +113,37 @@ function App() {
     myStorage.removeItem("user");
   };
 
+  const mapStyleMobile = {
+    width: '100%',
+    height: '85%',
+    position: 'absolute',
+    top: '0',
+    right: '0',
+  };
+  
+  const mapStyleDesktop = {
+    width: '80%',
+    height: '90%',
+    position: 'absolute',
+    bottom: '0',
+    right: '0',
+  };
+  
 
 
   return (
     <>
-
+      <div className="title-search">
+        <h1 className="app-title">Bukka Map</h1>
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      </div>
       <Map
         initialViewState={{
-          longitude: -100,
-          latitude: 40,
-          zoom: 14
+          latitude: 49.2827,
+          longitude: -123.1207,
+          zoom: 12,
         }}
-        style={{width: 600, height: 400}}
+        style={isMobile ? mapStyleMobile : mapStyleDesktop}
         mapStyle="mapbox://styles/mapbox/streets-v9"
         mapboxAccessToken={import.meta.env.VITE_APP_MAPBOX}
         onDblClick = {handleAddClick}
@@ -215,15 +247,8 @@ function App() {
         )}
     </Map>
 
-    <AuthWrapper
-        showRegister={showRegister}
-        setShowRegister={setShowRegister}
-        showLogin={showLogin}
-        setShowLogin={setShowLogin}
-        setCurrentUser={setCurrentUser}
-        myStorage={myStorage}
-      />
-      <Sidebar pins={pins} />
+
+    <Sidebar pins={pins} searchTerm={searchTerm} /> 
 
     {currentUser ? (
       <button className="button logout" onClick={handleLogout}>

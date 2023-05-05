@@ -1,51 +1,112 @@
-App.css
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background-color: #75E0AD;
 }
 
-.title {
-  font-size: 2rem;
-  color: #E0E372;
-  margin-left: 1rem;
+
+
+.post-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
-@media (max-width: 769px) {
-  .map-container {
-    width: 100%;
-    height: 85vh;
-  }
-
-  .sidebar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 15vh;
-    overflow-x: scroll;
-  }
+.post-item {
+  border-bottom: 1px solid #ddd;
+  padding: 8px 0;
 }
 
-@media (min-width: 769px) {
-  .map-container {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 80%;
-    height: 90%;
-  }
+.post-item:last-child {
+  border-bottom: none;
+}
 
-  .sidebar {
-    position: fixed;
-    left: 0;
-    top: 10%;
-    width: 20%;
-    height: 90%;
-    overflow-y: scroll;
-  }
+.post-item h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.post-item span {
+  display: block;
+  font-size: 12px;
+  color: #888;
 }
 
 .search-bar {
-  margin-left: 2rem;
+  position: fixed;
+  top: 2%;
+  left: 20%;
 }
+
+.title-search {
+  display: flex;
+  flex-direction: column;
+}
+.app-title {
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  color: #E0E372;
+}
+
+.search-bar {
+  width: 20%;
+  height: 30px;
+  border-radius: 15px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: 15%;
+    top: auto;
+    left: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .post-item {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    border-bottom: none;
+  }
+}
+
+/* Add your custom styles below */
+  .map {
+    width: 80%;
+    height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  }
+
+  .map-container {
+  width: 100%;
+  height: 100%;
+  }
+
+  .mapboxgl-popup {
+  max-width: 200px;
+  }
+
+  .mapboxgl-popup-content {
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+  }
+
+
 
 .card{
     width: 250px;

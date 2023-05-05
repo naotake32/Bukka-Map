@@ -4,14 +4,19 @@ import "./Sidebar.css";
 
 type SidebarProps = {
   pins: Array<Pin>;
+  searchTerm: string; // 追加
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ pins }) => {
+const Sidebar: React.FC<SidebarProps> = ({ pins,searchTerm }) => {
+    const filteredPins = pins.filter((pin) =>
+    pin.product.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="sidebar">
       <h2 className="sidebar-title">Recent Posts</h2>
       <ul className="post-list">
-        {pins.map((pin) => (
+      {filteredPins.map((pin) => (
           <li key={pin._id} className="post-item">
             <h3>{pin.product}</h3>
             <p>{pin.price}$</p>

@@ -1,19 +1,21 @@
 .sidebar {
-    width: 300px;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100%;
-    overflow-y: scroll;
-  }
-  
-  .sidebar-title {
-    margin-bottom: 10px;
-  }
-  
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-radius: 5px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 90%;
+  width: 20%;
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
   .post-list {
     list-style-type: none;
     padding: 0;
