@@ -117,7 +117,7 @@ function App() {
     width: '100%',
     height: '85%',
     position: 'absolute',
-    top: '0',
+    top: '15%',
     right: '0',
   };
   
@@ -250,7 +250,7 @@ function App() {
 
     <Sidebar pins={pins} searchTerm={searchTerm} /> 
 
-    {currentUser ? (
+    {/* {currentUser ? (
       <button className="button logout" onClick={handleLogout}>
         Log out
       </button>
@@ -266,7 +266,7 @@ function App() {
           Register
         </button>
       </div>
-    )}
+    )} */}
     </>
   );
 }
