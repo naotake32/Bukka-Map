@@ -77,11 +77,11 @@ function App() {
     setViewport({...viewport, latitude: lat, longitude: long})
     console.log(viewport);
   }
-
+//ダブルクリックを認識出来ているかを確認する関数
   const handleAddClick = (e)=> {
     console.log("hellooooo");
   }
-
+//pinを追加する処理
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newPin = {
@@ -94,7 +94,7 @@ function App() {
     };
 
     try {
-      const res = await axios.post("/api//pins", newPin);
+      const res = await axios.post("/api/pins", newPin);
       setPins([...pins, res.data]);
       setNewPlace(null);
     } catch (err) {
@@ -105,8 +105,11 @@ function App() {
   const noticeClick = (e: any) =>{
     console.log(e.lngLat.lng, e.lngLat.lat);
     setNewPlace({long : e.lngLat.lng,lat: e.lngLat.lat})
-    console.log(newPlace);
   }
+ //デバッグ用に新しいnewPlaceの値をチェックする関数
+  useEffect(() => {
+    console.log(newPlace);
+  }, [newPlace]);
 
   const handleLogout = () => {
     setCurrentUser(null);
@@ -175,7 +178,6 @@ function App() {
     </Marker>
 
     {/* show popup */}
-    {console.log(pin._id === currentPlaceId)}
     {pin._id === currentPlaceId && showPopup && (
       <Popup
         longitude={pin.long}
@@ -208,7 +210,10 @@ function App() {
         closeButton={true}
         closeOnClick={false}
         anchor="bottom"
-        onClose={() => setShowPopup(false)}
+        onClose={() => {
+          setNewPlace(null); // ここでnewPlaceをnullにリセット
+          setShowPopup(false); // ポップアップ表示を制御
+        }}
     >
          <div>
                 <form onSubmit={handleSubmit}>
