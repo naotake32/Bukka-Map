@@ -47,6 +47,7 @@ function App() {
   const [isSale, setIsSale] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 769);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(()=>{
     const getPins = async ()=> {
@@ -84,6 +85,13 @@ function App() {
 //pinを追加する処理
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 空白チェック
+    if (!product || !price || !desc) {
+      setErrorMessage("All fields must be filled out.");
+      return; // 送信を阻止
+    }
+
     const newPin = {
       username: currentUser,
       product,
@@ -97,6 +105,7 @@ function App() {
       const res = await axios.post("/api/pins", newPin);
       setPins([...pins, res.data]);
       setNewPlace(null);
+      setErrorMessage(""); // エラーメッセージをクリア
     } catch (err) {
       console.log(err);
     }
@@ -211,8 +220,9 @@ function App() {
         closeOnClick={false}
         anchor="bottom"
         onClose={() => {
-          setNewPlace(null); // ここでnewPlaceをnullにリセット
+          setNewPlace(null); // ここでnewPlaceをnullにリセット。これをしないとバツ印を押した後にフォームが表示されなくなる
           setShowPopup(false); // ポップアップ表示を制御
+          setErrorMessage(""); // エラーメッセージをリセット
         }}
     >
          <div>
@@ -235,6 +245,7 @@ function App() {
                     placeholder="Explain about this product."
                     onChange={(e) => setDesc(e.target.value)}
                   />
+                  {errorMessage && <div className="error-message">{errorMessage}</div>} 
                   <button type="submit" className="submitButton">
                     Add Pin
                   </button>
