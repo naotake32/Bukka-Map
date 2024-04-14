@@ -14,4 +14,5 @@ npm run server
 ・naotake32がコードをレビュー
 
 ・PRをマージ
+
 の繰り返しで行っていく
