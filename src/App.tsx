@@ -17,6 +17,7 @@ type Pin = {
   username: string;
   product: string;
   price: number;
+  tags: string[]; 
   desc: string;
   lat: number;
   long: number;
@@ -48,6 +49,8 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 769);
   const [errorMessage, setErrorMessage] = useState("");
+  const [currentTag, setCurrentTag] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
 
   useEffect(()=>{
     const getPins = async ()=> {
@@ -82,6 +85,18 @@ function App() {
   const handleAddClick = (e)=> {
     console.log("hellooooo");
   }
+//Function to add new tags
+  const handleAddTag = () => {
+    if (!tags.includes(currentTag) && currentTag !== "") {
+      setTags([...tags, currentTag]);
+      setCurrentTag(""); // 入力フィールドをリセット
+    }
+  };
+  //Function to remove tags
+  const handleRemoveTag = (index: number) => {
+    setTags(tags.filter((_, idx) => idx !== index));
+  };
+
 //pinを追加する処理
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,6 +112,7 @@ function App() {
       product,
       desc,
       price,
+      tags,
       lat: newPlace?.lat,
       long: newPlace?.long,
     };
@@ -106,6 +122,8 @@ function App() {
       setPins([...pins, res.data]);
       setNewPlace(null);
       setErrorMessage(""); // エラーメッセージをクリア
+      setTags([]); // タグの配列をリセット
+      setCurrentTag(""); // タグ入力フィールドもリセット
     } catch (err) {
       console.log(err);
     }
@@ -223,6 +241,7 @@ function App() {
           setNewPlace(null); // ここでnewPlaceをnullにリセット。これをしないとバツ印を押した後にフォームが表示されなくなる
           setShowPopup(false); // ポップアップ表示を制御
           setErrorMessage(""); // エラーメッセージをリセット
+          setTags([]); // タグの配列の中身を空にする
         }}
     >
          <div>
@@ -239,7 +258,23 @@ function App() {
                     autoFocus
                     onChange={(e) => setPrice(e.target.value)}
                   />
-                 
+                  <label>Tags</label>
+                  <div>
+                    <input
+                      value={currentTag}
+                      placeholder="Enter a tag and add"
+                      onChange={(e) => setCurrentTag(e.target.value)}
+                    />
+                    <button type="button" onClick={handleAddTag}>Add Tag</button>
+                  </div>
+                  <div>
+                    {tags.map((tag, index) => (
+                      <div key={index}>
+                        <span>{tag}</span>
+                        <button type="button" onClick={() => handleRemoveTag(index)}>Remove</button>
+                      </div>
+                    ))}
+                  </div>
                   <label>Description</label>
                   <textarea
                     placeholder="Explain about this product."

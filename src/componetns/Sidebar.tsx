@@ -4,7 +4,8 @@ import "./Sidebar.css";
 
 type SidebarProps = {
   pins: Array<Pin>;
-  searchTerm: string; // 追加
+  productName: string;
+  tag: string;
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ pins,searchTerm }) => {
@@ -20,6 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ pins,searchTerm }) => {
           <li key={pin._id} className="post-item">
             <h3>{pin.product}</h3>
             <p>{pin.price}$</p>
+            <div>Tags: {pin.tags.join(", ")}</div>
             <span>Posted by {pin.username}</span>
             <span>{format(pin.createdAt)}</span>
           </li>
