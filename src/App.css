@@ -192,8 +192,7 @@ label{
 
 form {
     width: 200px;
-    height: 250px;
-
+    height: 360px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
