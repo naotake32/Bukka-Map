@@ -4,7 +4,8 @@ import "./Sidebar.css";
 
 type SidebarProps = {
   pins: Array<Pin>;
-  searchTerm: string; // 追加
+  productName: string;
+  tag: string;
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ pins,searchTerm }) => {
