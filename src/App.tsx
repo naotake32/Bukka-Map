@@ -51,12 +51,16 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [currentTag, setCurrentTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
+  const [filteredPins, setFilteredPins] = useState<Pin[]>([]);
+  const [searchProduct, setSearchProduct] = useState("");
+  const [searchTag, setSearchTag] = useState("");
 
   useEffect(()=>{
     const getPins = async ()=> {
       try{
         const res = await axios.get("/api/pins");
         setPins(res.data);
+        setFilteredPins(res.data); // 初期ロードで全てのピンを表示
       }catch(err){
         console.log(err);
       }
@@ -158,6 +162,22 @@ function App() {
     bottom: '0',
     right: '0',
   };
+
+  
+
+  const handleSearch = () => {
+    const result = pins.filter(pin =>
+      pin.product.toLowerCase().includes(searchProduct.toLowerCase()) &&
+      (searchTag === "" || pin.tags.includes(searchTag))
+    );
+    setFilteredPins(result);
+  };
+
+  const clearSearch = () => {
+    setSearchProduct("");
+    setSearchTag("");
+    setFilteredPins(pins);
+  };
   
 
 
@@ -165,7 +185,12 @@ function App() {
     <>
       <div className="title-search">
         <h1 className="app-title">Bukka Map</h1>
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <SearchBar
+          setSearchProduct={setSearchProduct}
+          setSearchTag={setSearchTag}
+          handleSearch={handleSearch}
+          clearSearch={clearSearch}
+        />
       </div>
       <Map
         initialViewState={{
@@ -299,7 +324,7 @@ function App() {
     </Map>
 
 
-    <Sidebar pins={pins} searchTerm={searchTerm} /> 
+    <Sidebar pins={filteredPins} />
 
     {/* {currentUser ? (
       <button className="button logout" onClick={handleLogout}>
