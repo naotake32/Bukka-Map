@@ -1,39 +1,30 @@
 import React, { useState } from "react";
 
 type SearchBarProps = {
-  setSearchParams: (params: { productName: string; tag: string }) => void;
+  setSearchProduct: (productName: string) => void;
+  setSearchTag: (tag: string) => void;
+  handleSearch: () => void;
+  clearSearch: () => void;
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({ setSearchParams }) => {
-  const [productName, setProductName] = useState("");
-  const [tag, setTag] = useState("");
-
-  const handleProductNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProductName(e.target.value);
-    setSearchParams({ productName: e.target.value, tag });
-  };
-
-  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTag(e.target.value);
-    setSearchParams({ productName, tag: e.target.value });
-  };
+const SearchBar: React.FC<SearchBarProps> = ({ setSearchProduct, setSearchTag, handleSearch, clearSearch }) => {
 
   return (
     <div className="search-bar-container">
       <input
         type="text"
-        value={productName}
-        onChange={handleProductNameChange}
+        onChange={(e) => setSearchProduct(e.target.value)}
         placeholder="Search products..."
         className="search-bar"
       />
       <input
         type="text"
-        value={tag}
-        onChange={handleTagChange}
+        onChange={(e) => setSearchTag(e.target.value)}
         placeholder="Search by tags..."
         className="search-bar"
       />
+      <button onClick={handleSearch}>Search</button>
+      <button onClick={clearSearch}>Clear</button>
     </div>
   );
 };
