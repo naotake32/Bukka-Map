@@ -21,7 +21,7 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ pins }) => {
   return (
     <div className="sidebar">
-      <h2 className="sidebar-title">Filtered Posts</h2>
+      <h2 className="sidebar-title">Posts</h2>
       <ul className="post-list">
         {pins.map((pin) => (
           <li key={pin._id} className="post-item">

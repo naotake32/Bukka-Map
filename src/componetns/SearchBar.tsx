@@ -8,23 +8,39 @@ type SearchBarProps = {
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({ setSearchProduct, setSearchTag, handleSearch, clearSearch }) => {
+  const [productName, setProductName] = useState("");
+  const [tag, setTag] = useState("");
+
+  const handleClear = () => {
+    setProductName(""); // プロダクト名のステートをクリア
+    setTag("");         // タグのステートをクリア
+    clearSearch();      // 上位コンポーネントのクリア処理を呼び出し
+  };
 
   return (
     <div className="search-bar-container">
       <input
         type="text"
-        onChange={(e) => setSearchProduct(e.target.value)}
+        value={productName}
+        onChange={(e) => {
+          setProductName(e.target.value); // ローカルステートを更新
+          setSearchProduct(e.target.value); // 上位コンポーネントのステートを更新
+        }}
         placeholder="Search products..."
         className="search-bar"
       />
       <input
         type="text"
-        onChange={(e) => setSearchTag(e.target.value)}
+        value={tag}
+        onChange={(e) => {
+          setTag(e.target.value); // ローカルステートを更新
+          setSearchTag(e.target.value); // 上位コンポーネントのステートを更新
+        }}
         placeholder="Search by tags..."
         className="search-bar"
       />
       <button onClick={handleSearch}>Search</button>
-      <button onClick={clearSearch}>Clear</button>
+      <button onClick={handleClear}>Clear</button>
     </div>
   );
 };
