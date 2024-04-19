@@ -8,7 +8,6 @@ import {format} from "timeago.js";
 import Register from "./componetns/Register";
 import Login from "./componetns/Login";
 import Sidebar from "./componetns/Sidebar";// 追加
-import AuthWrapper from "./componetns/Authwrapper"; // 追加
 import SearchBar from "./componetns/SearchBar"; // 追加
 
 
@@ -207,9 +206,10 @@ function App() {
         transitionDuration="200"
       >
       {/* show icon */}
-      {pins.map((pin)=>(
+      {filteredPins.map((pin) => (
       <>
       <Marker
+              key={pin._id}  // 各Markerに一意のkeyを割り当て
               latitude={pin.lat}
               longitude={pin.long}
               anchor="bottom"
@@ -325,24 +325,6 @@ function App() {
 
 
     <Sidebar pins={filteredPins} />
-
-    {/* {currentUser ? (
-      <button className="button logout" onClick={handleLogout}>
-        Log out
-      </button>
-    ) : (
-      <div className="buttons">
-        <button className="button login" 
-                onClick={() => setShowLogin(true)}>
-          Login
-        </button>
-        <button
-              className="button register"
-              onClick={() => setShowRegister(true)}>
-          Register
-        </button>
-      </div>
-    )} */}
     </>
   );
 }
