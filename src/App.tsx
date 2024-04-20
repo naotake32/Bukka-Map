@@ -7,6 +7,8 @@ import axios from "axios";
 import {format} from "timeago.js";
 import Register from "./componetns/Register";
 import Login from "./componetns/Login";
+import { BrowserRouter } from 'react-router-dom';
+import LandingPage from "./componetns/LandingPage";// 追加
 import Sidebar from "./componetns/Sidebar";// 追加
 import SearchBar from "./componetns/SearchBar"; // 追加
 
@@ -182,8 +184,12 @@ function App() {
 
   return (
     <>
+      <BrowserRouter>
+      <section>
       <div className="title-search">
-        <h1 className="app-title">Bukka Map</h1>
+        <h1 className="app-title">
+          <img src="./src/assets/Bukka-logo-lateral.png" width="200px"/>
+        </h1>
         <SearchBar
           setSearchProduct={setSearchProduct}
           setSearchTag={setSearchTag}
@@ -325,6 +331,8 @@ function App() {
 
 
     <Sidebar pins={filteredPins} />
+    </section>
+    </BrowserRouter>
     </>
   );
 }
