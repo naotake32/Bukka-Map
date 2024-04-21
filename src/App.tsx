@@ -158,7 +158,7 @@ function App() {
   
   const mapStyleDesktop = {
     width: '80%',
-    height: '90%',
+    height: '85%',
     position: 'absolute',
     bottom: '0',
     right: '0',
