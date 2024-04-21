@@ -45,7 +45,18 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   margin: 10px;
+}
+
+.search-bar-container button {
+  height: 35px;
+    border-radius: 30px;
+    min-width: 100px;
+    background: teal;
+    color: white;
+    margin: 0 5px;
+    border: none;
 }
 
 .search-bar {
@@ -75,6 +86,16 @@ body {
 }
 
 @media (max-width: 768px) {
+.search-bar-container {
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.search-bar {
+  margin-right: 0px;
+}
   .sidebar {
     position: fixed;
     width: 100%;
@@ -149,8 +170,8 @@ body {
 
 /* Add your custom styles below */
   .map {
-    width: 80%;
-    height: 100%;
+  width: 80%;
+  height: 100%;
   position: absolute;
   top: 0;
   right: 0;
