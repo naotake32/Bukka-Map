@@ -95,6 +95,8 @@ body {
 }
 .search-bar {
   margin-right: 0px;
+  position: static;
+  width: 90%;
 }
   .sidebar {
     position: fixed;
@@ -144,11 +146,6 @@ body {
 
   .title-search.active {
     transform: translateY(-100%);
-  }
-
-  .search-bar {
-    position: static;
-    width: 80%;
   }
 
   .toggle-arrow {
