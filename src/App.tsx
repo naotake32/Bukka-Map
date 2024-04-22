@@ -202,7 +202,7 @@ function App() {
       <section>
       <div className="title-search">
         <h1 className="app-title">
-          <img src="./src/assets/Bukka-logo-lateral.png" width="200px"/>
+          <img src="./src/assets/Bukka-logo-lateral.png" width="200px" alt="logo-icon"/>
         </h1>
         <SearchBar
           setSearchProduct={setSearchProduct}
