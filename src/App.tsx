@@ -43,6 +43,7 @@ function App() {
     longitude: 17.071727,
     zoom: 4,
   });
+  const minimumZoom = 15; // このズームレベル以上でないと投稿できないように設定
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -86,11 +87,11 @@ function App() {
     setViewport({...viewport, latitude: lat, longitude: long})
     console.log(viewport);
   }
-//ダブルクリックを認識出来ているかを確認する関数
+  //ダブルクリックを認識出来ているかを確認するデバッグ用関数
   const handleAddClick = (e)=> {
     console.log("hellooooo");
   }
-//Function to add new tags
+  //Function to add new tags
   const handleAddTag = () => {
     if (!tags.includes(currentTag) && currentTag !== "") {
       setTags([...tags, currentTag]);
@@ -102,7 +103,7 @@ function App() {
     setTags(tags.filter((_, idx) => idx !== index));
   };
 
-//pinを追加する処理
+  //pinを追加する処理
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -134,7 +135,16 @@ function App() {
     }
   };
 
-  const noticeClick = (e: any) =>{
+  const noticeClick = (e: MapboxEvent<MouseEvent>) => {
+    // イベントからズームレベルを取得
+    const currentZoom = e.target.getZoom();
+  
+    // currentZoom を使用してズームレベルをチェック
+    if (currentZoom < minimumZoom) {
+      console.log(currentZoom, minimumZoom); // デバッグ情報を表示
+      alert("Please zoom in further to post."); // アラートを表示
+      return;
+    }
     console.log(e.lngLat.lng, e.lngLat.lat);
     setNewPlace({long : e.lngLat.lng,lat: e.lngLat.lat})
   }
@@ -165,7 +175,7 @@ function App() {
   };
 
   
-
+  //検索処理
   const handleSearch = () => {
     const result = pins.filter(pin =>
       pin.product.toLowerCase().includes(searchProduct.toLowerCase()) &&
@@ -173,7 +183,7 @@ function App() {
     );
     setFilteredPins(result);
   };
-
+  //検索結果、検索ワードのクリア
   const clearSearch = () => {
     setSearchProduct("");
     setSearchTag("");
