@@ -14,7 +14,7 @@ const PinSchema = new mongoose.Schema({
     tags: {
         type: [String],
         validate: [
-            { validator: tagLimit, message: '{PATH} exceeds the limit of 5' },
+            { validator: tagLimit, message: '{PATH} exceeds the limit of 3' },
             { validator: validateTags, message: '{PATH} must only contain uppercase alphabets' },
             { validator: validateUniqueTags, message: '{PATH} must contain only unique tags' }
         ]
@@ -43,7 +43,7 @@ const PinSchema = new mongoose.Schema({
 // Helper function to validate the number of tags
 // val.length <= 5 will be true or false depends on the val below 
 function tagLimit(val) {
-    return val.length <= 5;
+    return val.length <= 3;
 }
 
 // Validate that each tag contains only uppercase alphabets
