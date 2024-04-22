@@ -4,16 +4,24 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import "./login.css";
 
-export default function Login({ setShowLogin, setCurrentUser,myStorage }) {
-  const [error, setError] = useState(false);
-  const usernameRef = useRef();
-  const passwordRef = useRef();
+// 型を定義する
+interface LoginProps {
+  setShowLogin: (show: boolean) => void;
+  setCurrentUser: (user: string) => void;
+  myStorage: Storage;
+}
 
-  const handleSubmit = async (e) => {
+export default function Login({ setShowLogin, setCurrentUser, myStorage }: LoginProps) {
+  const [error, setError] = useState(false);
+  // HTMLInputElementの型を指定
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const user = {
-      username: usernameRef.current.value,
-      password: passwordRef.current.value,
+      username: usernameRef.current?.value,
+      password: passwordRef.current?.value,
     };
     try {
       const res = await axios.post("api/users/login", user);
@@ -36,7 +44,7 @@ export default function Login({ setShowLogin, setCurrentUser,myStorage }) {
         <input autoFocus placeholder="username" ref={usernameRef} />
         <input
           type="password"
-          minlength="8"
+          minLength={8}
           placeholder="password"
           ref={passwordRef}
         />

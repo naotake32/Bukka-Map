@@ -4,20 +4,25 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import CancelIcon from '@mui/icons-material/Cancel';
 import axios from "axios";
 
-export default function Register({setShowRegister}) {
+// 型を定義する
+interface RegisterProps {
+    setShowRegister: (show: boolean) => void;
+  }
+
+  export default function Register({setShowRegister}: RegisterProps) {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
-    const usernameRef = useRef();
-    const emailRef = useRef();
-    const passwordRef = useRef();
+    // HTMLInputElementの型を指定
+    const usernameRef = useRef<HTMLInputElement>(null);
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("called");
         const newUser = {
-            username: usernameRef.current.value,
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
+            username: usernameRef.current?.value,
+            email: emailRef.current?.value,
+            password: passwordRef.current?.value,
         }
 
         try{
@@ -39,7 +44,7 @@ export default function Register({setShowRegister}) {
                 <input type="email" placeholder="email" ref={emailRef}/>
                 <input
                     type="password"
-                    minlength="8"
+                    minLength={8}
                     placeholder="password"
                     ref={passwordRef}
         />

@@ -2,11 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import Map, {Marker, Popup,MapboxEvent} from 'react-map-gl';
+import { MapLayerMouseEvent } from 'mapbox-gl';
 import "../src/App.css";
 import axios from "axios";
 import {format} from "timeago.js";
-import Register from "./componetns/Register";
-import Login from "./componetns/Login";
+// import Register from "./componetns/Register";
+// import Login from "./componetns/Login";
 import { BrowserRouter } from 'react-router-dom';
 import LandingPage from "./componetns/LandingPage";// 追加
 import Sidebar from "./componetns/Sidebar";// 追加
@@ -44,7 +45,7 @@ function App() {
     zoom: 4,
   });
   const minimumZoom = 15; // このズームレベル以上でないと投稿できないように設定
-  const [currentPlaceId, setCurrentPlaceId] = useState(null);
+  const [currentPlaceId, setCurrentPlaceId] = useState<string | null>(null);
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [isSale, setIsSale] = useState(false);
@@ -89,9 +90,9 @@ function App() {
     console.log(viewport);
   }
   //ダブルクリックを認識出来ているかを確認するデバッグ用関数
-  const handleAddClick = (e)=> {
-    console.log("hellooooo");
-  }
+  const handleAddClick = (e: MapLayerMouseEvent) => {
+    console.log("double clicked");
+  };
   //Function to add new tags
   const handleAddTag = () => {
     if (!tags.includes(currentTag) && currentTag !== "") {
@@ -105,7 +106,7 @@ function App() {
   };
 
   //pinを追加する処理
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // 空白チェック
@@ -126,8 +127,11 @@ function App() {
 
     try {
       const res = await axios.post("/api/pins", newPin);
+      const updatedPins = [...pins, res.data];
       setPins([...pins, res.data]);
-      setNewPlace(null);
+          // ここでfilteredPinsも更新します。
+    setFilteredPins(updatedPins);
+      setNewPlace(undefined);
       setErrorMessage(""); // エラーメッセージをクリア
       setTags([]); // タグの配列をリセット
       setCurrentTag(""); // タグ入力フィールドもリセット
@@ -136,19 +140,17 @@ function App() {
     }
   };
 
-  const noticeClick = (e: MapboxEvent<MouseEvent>) => {
-    // イベントからズームレベルを取得
+  const noticeClick = (e: MapLayerMouseEvent) => {
+    const {lng, lat} = e.lngLat;
     const currentZoom = e.target.getZoom();
-  
-    // currentZoom を使用してズームレベルをチェック
     if (currentZoom < minimumZoom) {
-      console.log(currentZoom, minimumZoom); // デバッグ情報を表示
-      alert("Please zoom in further to post."); // アラートを表示
+      console.log(currentZoom, minimumZoom);
+      alert("Please zoom in further to post.");
       return;
     }
-    console.log(e.lngLat.lng, e.lngLat.lat);
-    setNewPlace({long : e.lngLat.lng,lat: e.lngLat.lat})
-  }
+    console.log(lng, lat);
+    setNewPlace({long: lng, lat: lat});
+  };
  //デバッグ用に新しいnewPlaceの値をチェックする関数
   useEffect(() => {
     console.log(newPlace);
@@ -159,15 +161,15 @@ function App() {
     myStorage.removeItem("user");
   };
 
-  const mapStyleMobile = {
+  const mapStyleMobile: React.CSSProperties = {
     width: '100%',
     height: '85%',
-    position: 'absolute',
+    position: 'absolute', // 'absolute' など具体的な値にする
     top: '15%',
     right: '0',
   };
   
-  const mapStyleDesktop = {
+  const mapStyleDesktop: React.CSSProperties = {
     width: '80%',
     height: '85%',
     position: 'absolute',
@@ -221,7 +223,6 @@ function App() {
         onDblClick = {handleAddClick}
         onClick={noticeClick}
         doubleClickZoom={false}
-        transitionDuration="200"
       >
       {/* show icon */}
       {filteredPins.map((pin) => (
@@ -281,7 +282,7 @@ function App() {
         closeOnClick={false}
         anchor="bottom"
         onClose={() => {
-          setNewPlace(null); // ここでnewPlaceをnullにリセット。これをしないとバツ印を押した後にフォームが表示されなくなる
+          setNewPlace(undefined); // newPlaceをundefinedにリセット.これをしないとバツ印を押した後にフォームが表示されなくなる
           setShowPopup(false); // ポップアップ表示を制御
           setErrorMessage(""); // エラーメッセージをリセット
           setTags([]); // タグの配列の中身を空にする
@@ -331,14 +332,14 @@ function App() {
               </div>
   </Popup>
      }
-     {showRegister &&<Register setShowRegister={setShowRegister}/>}
+     {/* {showRegister &&<Register setShowRegister={setShowRegister}/>}
      {showLogin && (
           <Login
             setShowLogin={setShowLogin}
             setCurrentUser={setCurrentUser}
             myStorage={myStorage}
           />
-        )}
+        )} */}
     </Map>
 
 
