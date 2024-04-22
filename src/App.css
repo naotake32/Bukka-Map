@@ -85,7 +85,51 @@ body {
   color: #E0E372;
 }
 
+.toggle-button{
+  display: none;
+}
+
 @media (max-width: 768px) {
+
+  .sidebar-wrapper {
+    position: fixed;
+    width: 100%;
+    height: 22%;
+    bottom: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    background-color: white;
+    z-index: 1;
+    transform: translateY(100%);
+    transition: transform 0.3s;
+  }
+  
+  .sidebar-wrapper.visible {
+    transform: translateY(0);
+  }
+  
+  .toggle-button {
+    position: fixed;
+    bottom: 0%; /* 閉じている時の位置 */
+    z-index: 100;
+    width: 30px;
+    height: 30px;
+    background-color: white; /* 白背景 */
+    border: none; /* ボーダーなし */
+    border-radius: 15%; /* 丸形 */
+    display: flex;
+    justify-content: center; /* 中央揃え */
+    align-items: center; /* 中央揃え */
+    font-size: 20px; /* アイコンサイズ */
+    cursor: pointer; /* カーソルスタイル */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 影を追加 */
+    transition: bottom 0.3s, transform 0.3s; /* トランジションを追加 */
+  }
+  
+  .toggle-button.visible {
+    bottom: 22%; /* サイドバーが表示されているときの位置 */
+  }
 .search-bar-container {
     flex-wrap: wrap;
     display: flex;
@@ -101,7 +145,7 @@ body {
   .sidebar {
     position: fixed;
     width: 100%;
-    height: 15%;
+    height: 100%;
     bottom: 0;
     display: flex;
     flex-wrap: nowrap;
@@ -146,22 +190,6 @@ body {
 
   .title-search.active {
     transform: translateY(-100%);
-  }
-
-  .toggle-arrow {
-    position: fixed;
-    right: 15px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 2;
-  }
-
-  .toggle-arrow.up {
-    bottom: 15px;
-  }
-
-  .toggle-arrow.down {
-    top: 15px;
   }
 }
 
@@ -225,6 +253,15 @@ form {
     flex-direction: column;
     justify-content: space-between;
     color: rgb(88, 87, 87);
+  }
+
+  form button {
+      border: none;
+      padding: 5px;
+      border-radius: 5px;
+      color: white;
+      background-color: teal;
+      cursor: pointer;
   }
   
   input {

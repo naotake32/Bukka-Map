@@ -50,6 +50,7 @@ function App() {
   const [isSale, setIsSale] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 769);
+  const [sidebarVisible, setSidebarVisible] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [currentTag, setCurrentTag] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
@@ -190,6 +191,7 @@ function App() {
     setFilteredPins(pins);
   };
   
+  const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
 
   return (
@@ -340,7 +342,12 @@ function App() {
     </Map>
 
 
-    <Sidebar pins={filteredPins} />
+    <div className={`sidebar-wrapper ${sidebarVisible ? "visible" : ""}`} onClick={toggleSidebar}>
+            <Sidebar pins={filteredPins} />
+          </div>
+          <button className={`toggle-button ${sidebarVisible ? "visible" : ""}`} onClick={toggleSidebar}>
+          {sidebarVisible ? '▼' : '▲'}
+          </button>
     </section>
     </BrowserRouter>
     </>
