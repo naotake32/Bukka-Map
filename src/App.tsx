@@ -127,7 +127,10 @@ function App() {
 
     try {
       const res = await axios.post("/api/pins", newPin);
+      const updatedPins = [...pins, res.data];
       setPins([...pins, res.data]);
+          // ここでfilteredPinsも更新します。
+    setFilteredPins(updatedPins);
       setNewPlace(undefined);
       setErrorMessage(""); // エラーメッセージをクリア
       setTags([]); // タグの配列をリセット
