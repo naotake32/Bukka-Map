@@ -24,11 +24,21 @@ const PinSchema = new mongoose.Schema({
         require: true,
         min: 3
     },
+    isSale: {
+        type: Boolean,
+        require: true,
+        default: false
+    },
     price:{
         type: Number,
         require: true,
         min: 0,
     },
+    storeName: { 
+        type: String, 
+        required: true, 
+        min: 3 
+    }, 
     lat:{
         type: Number,
         require: true,
@@ -36,6 +46,10 @@ const PinSchema = new mongoose.Schema({
     long:{
         type: Number,
         require: true,
+    },
+    image: {
+        type: String,
+        required: false  // 画像は必須ではない
     },
 },{ timestamps: true }
 );

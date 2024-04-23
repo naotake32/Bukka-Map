@@ -6,8 +6,6 @@ import { MapLayerMouseEvent } from 'mapbox-gl';
 import "../src/App.css";
 import axios from "axios";
 import {format} from "timeago.js";
-// import Register from "./componetns/Register";
-// import Login from "./componetns/Login";
 import { BrowserRouter } from 'react-router-dom';
 import LandingPage from "./componetns/LandingPage";// 追加
 import Sidebar from "./componetns/Sidebar";// 追加
@@ -18,7 +16,9 @@ type Pin = {
   _id: string;
   username: string;
   product: string;
+  storeName: string;
   price: number;
+  isSale: boolean; // 追加
   tags: string[]; 
   desc: string;
   lat: number;
@@ -39,6 +39,7 @@ function App() {
   const [product, setProduct] = useState("");
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
+  const [storeName, setStoreName] = useState("");
   const [viewport, setViewport] = useState({
     latitude: 47.040182,
     longitude: 17.071727,
@@ -46,8 +47,6 @@ function App() {
   });
   const minimumZoom = 15; // このズームレベル以上でないと投稿できないように設定
   const [currentPlaceId, setCurrentPlaceId] = useState<string | null>(null);
-  const [showRegister, setShowRegister] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
   const [isSale, setIsSale] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 769);
@@ -118,8 +117,10 @@ function App() {
     const newPin = {
       username: currentUser,
       product,
+      storeName, 
       desc,
       price,
+      isSale,
       tags,
       lat: newPlace?.lat,
       long: newPlace?.long,
@@ -201,9 +202,7 @@ function App() {
       <BrowserRouter>
       <section>
       <div className="title-search">
-        <h1 className="app-title">
           <img src="./src/assets/Bukka-logo-lateral.png" width="200px" alt="logo-icon"/>
-        </h1>
         <SearchBar
           setSearchProduct={setSearchProduct}
           setSearchTag={setSearchTag}
@@ -260,12 +259,15 @@ function App() {
         <div className='card'>
           <label>Product Name</label>
           <h4 className="product">{pin.product}</h4>
-          <p>sale{}</p>
+          <label>Store Name</label>
+          <h4 className="storeName">{pin.storeName}</h4> 
           <label>Price</label>
-          <p>{pin.price}$</p>
+          <p style={{ color: pin.isSale ? "red" : "black" }}>
+            {pin.price}$
+            {pin.isSale && <span style={{ color: "red" }}>(SALE)</span>}
+          </p>
           <label>Description</label>
           <p className="desc">{pin.desc}</p>
-          <span className="username">Posted by <b>{pin.username}</b></span>
           <span className="date">{format(pin.createdAt)}</span>
         </div>
       </Popup>)
@@ -296,11 +298,23 @@ function App() {
                     autoFocus
                     onChange={(e) => setProduct(e.target.value)}
                   />
+                  <label>Sale</label>
+                  <input
+                    type="checkbox"
+                    checked={isSale}
+                    onChange={(e) => setIsSale(e.target.checked)}
+                  />
                   <label>Price</label>
                   <input
                     placeholder="Enter a price"
                     autoFocus
                     onChange={(e) => setPrice(e.target.value)}
+                  />
+                  <label>Store Name</label>
+                  <input
+                    placeholder="Enter store name"
+                    autoFocus
+                    onChange={(e) => setStoreName(e.target.value)}
                   />
                   <label>Tags</label>
                   <div>
@@ -332,14 +346,6 @@ function App() {
               </div>
   </Popup>
      }
-     {/* {showRegister &&<Register setShowRegister={setShowRegister}/>}
-     {showLogin && (
-          <Login
-            setShowLogin={setShowLogin}
-            setCurrentUser={setCurrentUser}
-            myStorage={myStorage}
-          />
-        )} */}
     </Map>
 
 
