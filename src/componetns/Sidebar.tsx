@@ -7,6 +7,7 @@ type Pin = {
   username: string;
   product: string;
   price: number;
+  isSale: boolean; // 確認するために追加
   tags: string[]; 
   desc: string;
   lat: number;
@@ -26,7 +27,10 @@ const Sidebar: React.FC<SidebarProps> = ({ pins }) => {
         {pins.map((pin) => (
           <li key={pin._id} className="post-item">
             <h3>{pin.product}</h3>
-            <p>{pin.price} $</p>
+            <p style={{ color: pin.isSale ? "red" : "black" }}>
+              {pin.price}$
+              {pin.isSale && <span style={{ color: "red" }}>(SALE)</span>}
+            </p>
             <div>Tags: {pin.tags.join(", ")}</div>
             <span>Posted by {pin.username}</span>
             <span>{format(pin.createdAt)}</span>

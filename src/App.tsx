@@ -6,8 +6,6 @@ import { MapLayerMouseEvent } from 'mapbox-gl';
 import "../src/App.css";
 import axios from "axios";
 import {format} from "timeago.js";
-// import Register from "./componetns/Register";
-// import Login from "./componetns/Login";
 import { BrowserRouter } from 'react-router-dom';
 import LandingPage from "./componetns/LandingPage";// 追加
 import Sidebar from "./componetns/Sidebar";// 追加
@@ -19,6 +17,7 @@ type Pin = {
   username: string;
   product: string;
   price: number;
+  isSale: boolean; // 追加
   tags: string[]; 
   desc: string;
   lat: number;
@@ -46,8 +45,6 @@ function App() {
   });
   const minimumZoom = 15; // このズームレベル以上でないと投稿できないように設定
   const [currentPlaceId, setCurrentPlaceId] = useState<string | null>(null);
-  const [showRegister, setShowRegister] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
   const [isSale, setIsSale] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 769);
@@ -120,6 +117,7 @@ function App() {
       product,
       desc,
       price,
+      isSale, // この行を追加
       tags,
       lat: newPlace?.lat,
       long: newPlace?.long,
@@ -260,9 +258,11 @@ function App() {
         <div className='card'>
           <label>Product Name</label>
           <h4 className="product">{pin.product}</h4>
-          <p>sale{}</p>
           <label>Price</label>
-          <p>{pin.price}$</p>
+          <p style={{ color: pin.isSale ? "red" : "black" }}>
+            {pin.price}$
+            {pin.isSale && <span style={{ color: "red" }}>(SALE)</span>}
+          </p>
           <label>Description</label>
           <p className="desc">{pin.desc}</p>
           <span className="username">Posted by <b>{pin.username}</b></span>
@@ -295,6 +295,12 @@ function App() {
                     placeholder="Enter the product name"
                     autoFocus
                     onChange={(e) => setProduct(e.target.value)}
+                  />
+                  <label>Sale</label>
+                  <input
+                    type="checkbox"
+                    checked={isSale}
+                    onChange={(e) => setIsSale(e.target.checked)}
                   />
                   <label>Price</label>
                   <input
@@ -332,14 +338,6 @@ function App() {
               </div>
   </Popup>
      }
-     {/* {showRegister &&<Register setShowRegister={setShowRegister}/>}
-     {showLogin && (
-          <Login
-            setShowLogin={setShowLogin}
-            setCurrentUser={setCurrentUser}
-            myStorage={myStorage}
-          />
-        )} */}
     </Map>
 
 

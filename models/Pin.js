@@ -24,6 +24,11 @@ const PinSchema = new mongoose.Schema({
         require: true,
         min: 3
     },
+    isSale: {
+        type: Boolean,
+        require: true,
+        default: false
+    },
     price:{
         type: Number,
         require: true,
