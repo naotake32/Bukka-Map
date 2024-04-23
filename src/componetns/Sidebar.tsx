@@ -6,8 +6,9 @@ type Pin = {
   _id: string;
   username: string;
   product: string;
+  storeName: string;  
   price: number;
-  isSale: boolean; // 確認するために追加
+  isSale: boolean;
   tags: string[]; 
   desc: string;
   lat: number;
@@ -27,6 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({ pins }) => {
         {pins.map((pin) => (
           <li key={pin._id} className="post-item">
             <h3>{pin.product}</h3>
+            <p className="store-name">Store: {pin.storeName}</p>
             <p style={{ color: pin.isSale ? "red" : "black" }}>
               {pin.price}$
               {pin.isSale && <span style={{ color: "red" }}>(SALE)</span>}

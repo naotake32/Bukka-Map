@@ -16,6 +16,7 @@ type Pin = {
   _id: string;
   username: string;
   product: string;
+  storename: string;
   price: number;
   isSale: boolean; // 追加
   tags: string[]; 
@@ -38,6 +39,7 @@ function App() {
   const [product, setProduct] = useState("");
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
+  const [storeName, setStoreName] = useState("");
   const [viewport, setViewport] = useState({
     latitude: 47.040182,
     longitude: 17.071727,
@@ -115,9 +117,10 @@ function App() {
     const newPin = {
       username: currentUser,
       product,
+      storeName, 
       desc,
       price,
-      isSale, // この行を追加
+      isSale,
       tags,
       lat: newPlace?.lat,
       long: newPlace?.long,
@@ -199,9 +202,7 @@ function App() {
       <BrowserRouter>
       <section>
       <div className="title-search">
-        <h1 className="app-title">
           <img src="./src/assets/Bukka-logo-lateral.png" width="200px" alt="logo-icon"/>
-        </h1>
         <SearchBar
           setSearchProduct={setSearchProduct}
           setSearchTag={setSearchTag}
@@ -258,6 +259,8 @@ function App() {
         <div className='card'>
           <label>Product Name</label>
           <h4 className="product">{pin.product}</h4>
+          <label>Store Name</label>
+          <h4 className="storeName">{pin.storeName}</h4> 
           <label>Price</label>
           <p style={{ color: pin.isSale ? "red" : "black" }}>
             {pin.price}$
@@ -265,7 +268,6 @@ function App() {
           </p>
           <label>Description</label>
           <p className="desc">{pin.desc}</p>
-          <span className="username">Posted by <b>{pin.username}</b></span>
           <span className="date">{format(pin.createdAt)}</span>
         </div>
       </Popup>)
@@ -307,6 +309,12 @@ function App() {
                     placeholder="Enter a price"
                     autoFocus
                     onChange={(e) => setPrice(e.target.value)}
+                  />
+                  <label>Store Name</label>
+                  <input
+                    placeholder="Enter store name"
+                    autoFocus
+                    onChange={(e) => setStoreName(e.target.value)}
                   />
                   <label>Tags</label>
                   <div>
