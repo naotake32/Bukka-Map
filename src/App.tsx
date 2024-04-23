@@ -16,7 +16,7 @@ type Pin = {
   _id: string;
   username: string;
   product: string;
-  storename: string;
+  storeName: string;
   price: number;
   isSale: boolean; // 追加
   tags: string[]; 
