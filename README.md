@@ -20,4 +20,6 @@ npm run server
 
 ・PRをマージ
 
+・npm run buildでデプロイ
+
 の繰り返しで行っていく
