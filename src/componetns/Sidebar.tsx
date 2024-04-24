@@ -7,6 +7,7 @@ type Pin = {
   username: string;
   product: string;
   storeName: string;  
+  currency: string;
   price: number;
   isSale: boolean;
   tags: string[]; 
@@ -21,16 +22,21 @@ type SidebarProps = {
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ pins }) => {
+  // Dateオブジェクトに変換してからタイムスタンプでソート
+  const sortedPins = pins.slice().sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+
   return (
     <div className="sidebar">
       <h2 className="sidebar-title">Posts</h2>
       <ul className="post-list">
-        {pins.map((pin) => (
+        {sortedPins.map((pin) => (
           <li key={pin._id} className="post-item">
             <h3>{pin.product}</h3>
             <p className="store-name">Store: {pin.storeName}</p>
             <p style={{ color: pin.isSale ? "red" : "black" }}>
-              {pin.price}$
+              {pin.currency}{pin.price}
               {pin.isSale && <span style={{ color: "red" }}>(SALE)</span>}
             </p>
             <div>Tags: {pin.tags.join(", ")}</div>

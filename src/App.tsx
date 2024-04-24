@@ -17,6 +17,7 @@ type Pin = {
   username: string;
   product: string;
   storeName: string;
+  currency: string; 
   price: number;
   isSale: boolean; // 追加
   tags: string[]; 
@@ -38,6 +39,7 @@ function App() {
   const [newPlace, setNewPlace] = useState<Geoloc>();
   const [product, setProduct] = useState("");
   const [desc, setDesc] = useState("");
+  const [currency, setCurrency] = useState("$");
   const [price, setPrice] = useState("");
   const [storeName, setStoreName] = useState("");
   const [viewport, setViewport] = useState({
@@ -113,12 +115,15 @@ function App() {
       setErrorMessage("All fields must be filled out.");
       return; // 送信を阻止
     }
+  
+    const formattedPrice = `${currency}${price}`; // 価格情報に通貨記号を追加
 
     const newPin = {
       username: currentUser,
       product,
       storeName, 
       desc,
+      currency,
       price,
       isSale,
       tags,
@@ -131,7 +136,7 @@ function App() {
       const updatedPins = [...pins, res.data];
       setPins([...pins, res.data]);
           // ここでfilteredPinsも更新します。
-    setFilteredPins(updatedPins);
+      setFilteredPins(updatedPins);
       setNewPlace(undefined);
       setErrorMessage(""); // エラーメッセージをクリア
       setTags([]); // タグの配列をリセット
@@ -310,6 +315,10 @@ function App() {
                     autoFocus
                     onChange={(e) => setPrice(e.target.value)}
                   />
+                  <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
+                    <option value="$">$ (USD)</option>
+                    <option value="¥">¥ (JPY)</option>
+                  </select>
                   <label>Store Name</label>
                   <input
                     placeholder="Enter store name"
