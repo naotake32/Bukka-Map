@@ -29,6 +29,11 @@ const PinSchema = new mongoose.Schema({
         require: true,
         default: false
     },
+    currency: {
+        type: String,
+        required: true,
+        enum: ['$', '¥'] // 通貨の種類を限定
+    },
     price:{
         type: Number,
         require: true,
