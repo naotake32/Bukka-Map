@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import Map, {Marker, Popup,MapboxEvent} from 'react-map-gl';
 import { MapLayerMouseEvent } from 'mapbox-gl';
+import { ViewState } from 'react-map-gl'
 import "../src/App.css";
 import axios from "axios";
 import {format} from "timeago.js";
@@ -10,6 +11,8 @@ import { BrowserRouter } from 'react-router-dom';
 import LandingPage from "./componetns/LandingPage";// 追加
 import Sidebar from "./componetns/Sidebar";// 追加
 import SearchBar from "./componetns/SearchBar"; // 追加
+import { point } from '@turf/helpers';
+import distance from '@turf/distance';
 
 
 type Pin = {
@@ -43,9 +46,9 @@ function App() {
   const [price, setPrice] = useState("");
   const [storeName, setStoreName] = useState("");
   const [viewport, setViewport] = useState({
-    latitude: 47.040182,
-    longitude: 17.071727,
-    zoom: 4,
+    latitude: 49.2827,
+    longitude: -123.1207,
+    zoom: 10,
   });
   const minimumZoom = 15; // このズームレベル以上でないと投稿できないように設定
   const [currentPlaceId, setCurrentPlaceId] = useState<string | null>(null);
@@ -184,14 +187,26 @@ function App() {
   };
 
   
-  //検索処理
   const handleSearch = () => {
-    const result = pins.filter(pin =>
-      pin.product.toLowerCase().includes(searchProduct.toLowerCase()) &&
-      (searchTag === "" || pin.tags.includes(searchTag))
-    );
+    console.log("Searching from:", viewport.longitude, viewport.latitude);
+  
+    const center = point([viewport.longitude, viewport.latitude]);
+    console.log("Center point:", center);
+  
+    const result = pins.filter(pin => {
+      const pinPoint = point([pin.long, pin.lat]);
+      const distanceToCenter = distance(center, pinPoint, {units: 'kilometers'});
+      console.log(`Distance to center for pin ${pin._id}:`, distanceToCenter);
+  
+      return distanceToCenter <= 50 &&
+        pin.product.toLowerCase().includes(searchProduct.toLowerCase()) &&
+        (searchTag === "" || pin.tags.includes(searchTag));
+    });
+  
+    console.log("Filtered pins:", result.length);
     setFilteredPins(result);
   };
+  
   //検索結果、検索ワードのクリア
   const clearSearch = () => {
     setSearchProduct("");
@@ -201,6 +216,10 @@ function App() {
   
   const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
+  
+  useEffect(() => {
+    console.log("Viewport changed:", viewport);
+  }, [viewport]);
 
   return (
     <>
@@ -219,7 +238,7 @@ function App() {
         initialViewState={{
           latitude: 49.2827,
           longitude: -123.1207,
-          zoom: 12,
+          zoom: 10,
         }}
         style={isMobile ? mapStyleMobile : mapStyleDesktop}
         mapStyle="mapbox://styles/mapbox/streets-v9"
@@ -227,6 +246,7 @@ function App() {
         onDblClick = {handleAddClick}
         onClick={noticeClick}
         doubleClickZoom={false}
+        onMoveEnd={(evt) => setViewport(evt.viewState)}
       >
       {/* show icon */}
       {filteredPins.map((pin) => (
@@ -243,9 +263,8 @@ function App() {
       >
       <ShoppingBasketIcon
         style={{
-           fontSize: 7 * viewport.zoom,
-           color:
-             currentUser === pin.username ? "tomato" : "slateblue",
+           fontSize: 3.5 * viewport.zoom,
+           color:"tomato",
            cursor: "pointer",
          }}
           onClick={() => handleMarkerClick(pin._id, pin.lat, pin.long)}
