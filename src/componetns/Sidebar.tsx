@@ -19,9 +19,11 @@ type Pin = {
 
 type SidebarProps = {
   pins: Pin[];
+  onPostClick: (id: string) => void;
+  highlightedPin: string | null; // ハイライトされているピンのIDを受け取る
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ pins }) => {
+const Sidebar: React.FC<SidebarProps> = ({ pins, onPostClick, highlightedPin }) => {
   // Dateオブジェクトに変換してからタイムスタンプでソート
   const sortedPins = pins.slice().sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -32,7 +34,11 @@ const Sidebar: React.FC<SidebarProps> = ({ pins }) => {
       <h2 className="sidebar-title">Posts</h2>
       <ul className="post-list">
         {sortedPins.map((pin) => (
-          <li key={pin._id} className="post-item">
+          <li key={pin._id} 
+          className={`post-item ${pin._id === highlightedPin ? 'highlighted' : ''}`}
+              onClick={() => onPostClick(pin._id)}
+              onMouseEnter={() => onPostClick(pin._id)}
+              onMouseLeave={() => onPostClick(pin._id)}>
             <h3>{pin.product}</h3>
             <p className="store-name">Store: {pin.storeName}</p>
             <p style={{ color: pin.isSale ? "red" : "black" }}>
