@@ -193,6 +193,7 @@ function App() {
 
 
   const handleSidebarSelect = (id: string) => {
+    setSelectedPostId(id); // 選択された投稿IDを更新
     setCurrentPlaceId(id);
     setShowPopup(false); // ポップアップを表示しない
   }
@@ -286,7 +287,10 @@ function App() {
         longitude={pin.long}
         latitude={pin.lat}
         anchor="bottom"
-        onClose={() => setShowPopup(false)}
+        onClose={() => {
+          setShowPopup(false);
+          setCurrentPlaceId(null);  // ハイライトを解除するために追加
+        }}
         //closeOnClick={false}
 >
         <div className='card'>
@@ -387,7 +391,7 @@ function App() {
 
 
     <div className={`sidebar-wrapper ${sidebarVisible ? "visible" : ""}`} onClick={toggleSidebar}>
-    <Sidebar pins={filteredPins} onPostClick={handleSidebarSelect} />
+    <Sidebar pins={filteredPins} onPostClick={handleSidebarSelect} highlightedPin={selectedPostId} />
           </div>
           <button className={`toggle-button ${sidebarVisible ? "visible" : ""}`} onClick={toggleSidebar}>
           {sidebarVisible ? '▼' : '▲'}

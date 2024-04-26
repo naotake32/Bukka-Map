@@ -35,7 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({ pins, onPostClick, highlightedPin }) 
       <ul className="post-list">
         {sortedPins.map((pin) => (
           <li key={pin._id} 
-          className={`post-item ${pin._id === highlightedPin ? 'highlighted' : ''}`}
+              className={`post-item ${pin._id === highlightedPin ? 'highlighted' : ''}`} // 選択されたIDに対応する投稿には `highlighted` クラスを適用
               onClick={() => onPostClick(pin._id)}
               onMouseEnter={() => onPostClick(pin._id)}
               onMouseLeave={() => onPostClick(pin._id)}>
