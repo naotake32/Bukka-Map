@@ -286,7 +286,10 @@ function App() {
         longitude={pin.long}
         latitude={pin.lat}
         anchor="bottom"
-        onClose={() => setShowPopup(false)}
+        onClose={() => {
+          setShowPopup(false);
+          setCurrentPlaceId(null);  // ハイライトを解除するために追加
+        }}
         //closeOnClick={false}
 >
         <div className='card'>
