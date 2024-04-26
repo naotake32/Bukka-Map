@@ -14,7 +14,7 @@
 }
 
 .post-item.highlighted {
-  border: red solid 2px;
+  border: grey solid 2px;
 }
 
 .post-item:hover {
