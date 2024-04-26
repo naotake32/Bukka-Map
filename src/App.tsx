@@ -62,6 +62,7 @@ function App() {
   const [filteredPins, setFilteredPins] = useState<Pin[]>([]);
   const [searchProduct, setSearchProduct] = useState("");
   const [searchTag, setSearchTag] = useState("");
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   useEffect(()=>{
     const getPins = async ()=> {
@@ -186,6 +187,15 @@ function App() {
     right: '0',
   };
 
+  // Markerのスタイル設定部分を動的に変更します
+  const highlightStyle = { color: "gold", transform: "scale(1.2)" };
+  const normalStyle = { color: "tomato", cursor: "pointer" };
+
+
+  const handleSidebarSelect = (id: string) => {
+    setCurrentPlaceId(id);
+    setShowPopup(false); // ポップアップを表示しない
+  }
   
   const handleSearch = () => {
     console.log("Searching from:", viewport.longitude, viewport.latitude);
@@ -262,11 +272,10 @@ function App() {
               }}
       >
       <ShoppingBasketIcon
-        style={{
-           fontSize: 3.5 * viewport.zoom,
-           color:"tomato",
-           cursor: "pointer",
-         }}
+      style={{
+        fontSize: 3.5 * viewport.zoom,
+        ...(pin._id === currentPlaceId ? highlightStyle : normalStyle),
+      }}
           onClick={() => handleMarkerClick(pin._id, pin.lat, pin.long)}
       />
     </Marker>
@@ -378,7 +387,7 @@ function App() {
 
 
     <div className={`sidebar-wrapper ${sidebarVisible ? "visible" : ""}`} onClick={toggleSidebar}>
-            <Sidebar pins={filteredPins} />
+    <Sidebar pins={filteredPins} onPostClick={handleSidebarSelect} />
           </div>
           <button className={`toggle-button ${sidebarVisible ? "visible" : ""}`} onClick={toggleSidebar}>
           {sidebarVisible ? '▼' : '▲'}
