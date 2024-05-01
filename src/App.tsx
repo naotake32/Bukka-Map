@@ -180,7 +180,7 @@ function App() {
   };
   
   const mapStyleDesktop: React.CSSProperties = {
-    width: '80%',
+    width: '100%',
     height: '85%',
     position: 'absolute',
     bottom: '0',
@@ -291,6 +291,9 @@ function App() {
           setShowPopup(false);
           setCurrentPlaceId(null);  // ハイライトを解除するために追加
         }}
+        style={{
+          maxWidth: 'none'  // maxWidthを300pxに設定
+        }}
         //closeOnClick={false}
 >
         <div className='card'>
@@ -325,6 +328,9 @@ function App() {
           setShowPopup(false); // ポップアップ表示を制御
           setErrorMessage(""); // エラーメッセージをリセット
           setTags([]); // タグの配列の中身を空にする
+        }}
+        style={{
+          maxWidth: 'none'  // maxWidthを300pxに設定
         }}
     >
          <div>
@@ -390,9 +396,9 @@ function App() {
     </Map>
 
 
-    <div className={`sidebar-wrapper ${sidebarVisible ? "visible" : ""}`} onClick={toggleSidebar}>
-    <Sidebar pins={filteredPins} onPostClick={handleSidebarSelect} highlightedPin={selectedPostId} />
-          </div>
+    <div className={`sidebar-wrapper ${sidebarVisible ? "visible" : ""}`}>
+      <Sidebar pins={filteredPins} onPostClick={handleSidebarSelect} highlightedPin={selectedPostId} />
+    </div>
           <button className={`toggle-button ${sidebarVisible ? "visible" : ""}`} onClick={toggleSidebar}>
           {sidebarVisible ? '▼' : '▲'}
           </button>

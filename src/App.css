@@ -191,11 +191,26 @@ body {
   .title-search.active {
     transform: translateY(-100%);
   }
+
+  body .mapboxgl-popup {
+      z-index: 101;
+      width: 100%;
+      overflow: scroll;
+      top: 62%;
+      transform: none !important;
+      height: 40%;
+    }
+
+    body .card {
+      width: 100%;
+      justify-content: none;
+      height: 100%;
+    }
 }
 
 /* Add your custom styles below */
   .map {
-  width: 80%;
+  /* width: 80%; */
   height: 100%;
   position: absolute;
   top: 0;
@@ -208,7 +223,12 @@ body {
   }
 
   .mapboxgl-popup {
-  max-width: 200px;
+  top: 0;
+  left: 0;
+    z-index: 10;
+    width: 20%;
+    transform: none !important;
+    overflow: scroll;
   }
 
   .mapboxgl-popup-content {
@@ -220,10 +240,11 @@ body {
 
 .card{
     width: 250px;
-    height: 250px;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    /* justify-content: space-around; */
+    gap: 5%;
 }
 
 label{
@@ -247,8 +268,8 @@ label{
 }
 
 form {
-    width: 200px;
-    height: 360px;
+    /* width: 200px; */
+    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
