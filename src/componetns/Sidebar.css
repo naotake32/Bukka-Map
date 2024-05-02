@@ -2,7 +2,7 @@
   .sidebar {
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 16px;
+  padding: 10px;
   border-radius: 5px;
   position: absolute;
   bottom: 0;
@@ -15,6 +15,7 @@
 
 .post-item.highlighted {
   border: grey solid 2px;
+  background-color: #FFD23C;
 }
 
 .post-item:hover {
@@ -33,10 +34,27 @@
   
   .post-item {
     border-bottom: 1px solid #e5e5e5;
-    padding: 10px 0;
+    padding: 5px;
   }
   
   .post-item:last-child {
     border-bottom: none;
   }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none; /* リストマーカーを削除 */
+    padding: 0; /* パディングをリセット */
+  }
+  
+  .tag-item {
+    margin: 3px 5px 3px 0;
+    background-color: teal;
+    color: white;
+    border-radius: 30px;
+    padding: 5px;
+    min-width: 55px;
+    text-align: center;
+}
   

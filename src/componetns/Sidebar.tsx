@@ -41,11 +41,15 @@ const Sidebar: React.FC<SidebarProps> = ({ pins, onPostClick, highlightedPin }) 
               onMouseLeave={() => onPostClick(pin._id)}>
             <h3>{pin.product}</h3>
             <p className="store-name">Store: {pin.storeName}</p>
-            <p style={{ color: pin.isSale ? "red" : "black" }}>
+            <p className="price-text" style={{ color: pin.isSale ? "red" : "black" }}>
               {pin.currency}{pin.price}
               {pin.isSale && <span style={{ color: "red" }}>(SALE)</span>}
-            </p>
-            <div>Tags: {pin.tags.join(", ")}</div>
+            </p>            
+            <ul className="tag-list">
+              {pin.tags.map(tag => (
+                <li key={tag} className="tag-item">{tag}</li>
+              ))}
+            </ul>
             <span>Posted by {pin.username}</span>
             <span>{format(pin.createdAt)}</span>
           </li>
