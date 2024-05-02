@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import Map, {Marker, Popup,MapboxEvent} from 'react-map-gl';
 import { MapLayerMouseEvent } from 'mapbox-gl';
+import logoImg from "./assets/Bukka-logo-lateral.png";
 import { ViewState } from 'react-map-gl'
 import "../src/App.css";
 import axios from "axios";
@@ -240,7 +241,7 @@ function App() {
       <BrowserRouter>
       <section>
       <div className="title-search">
-          <img src="./src/assets/Bukka-logo-lateral.png" width="200px" alt="logo-icon"/>
+          <img src={logoImg} width="200px" max-height="70px" alt="logo-icon"/>
         <SearchBar
           setSearchProduct={setSearchProduct}
           setSearchTag={setSearchTag}
