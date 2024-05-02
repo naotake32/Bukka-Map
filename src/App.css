@@ -340,6 +340,10 @@ form {
   .button:focus{
     outline: none;
   }
+  .mapboxgl-popup-close-button {
+    font-weight: bold;
+    font-size: 40px;
+  }
   
   .logout{
     background-color: tomato;
