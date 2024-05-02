@@ -63,6 +63,7 @@ function App() {
   const [searchProduct, setSearchProduct] = useState("");
   const [searchTag, setSearchTag] = useState("");
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+  const [tempPinLocation, setTempPinLocation] = useState<Geoloc | null>(null); // 仮のピンの位置を管理
 
   useEffect(()=>{
     const getPins = async ()=> {
@@ -92,6 +93,7 @@ function App() {
     setCurrentPlaceId(id)
     setShowPopup(true);
     setViewport({...viewport, latitude: lat, longitude: long})
+    setTempPinLocation(null); // 仮のピンの位置をリセット
     console.log(viewport);
   }
   //ダブルクリックを認識出来ているかを確認するデバッグ用関数
@@ -160,6 +162,7 @@ function App() {
     }
     console.log(lng, lat);
     setNewPlace({long: lng, lat: lat});
+    setTempPinLocation({ long: lng, lat: lat });
   };
  //デバッグ用に新しいnewPlaceの値をチェックする関数
   useEffect(() => {
@@ -328,6 +331,7 @@ function App() {
           setShowPopup(false); // ポップアップ表示を制御
           setErrorMessage(""); // エラーメッセージをリセット
           setTags([]); // タグの配列の中身を空にする
+          setTempPinLocation(null); // 仮のピンを削除
         }}
         style={{
           maxWidth: 'none'  // maxWidthを300pxに設定
@@ -393,6 +397,21 @@ function App() {
               </div>
   </Popup>
      }
+     {tempPinLocation && (
+     <Marker
+     longitude={tempPinLocation.long}
+     latitude={tempPinLocation.lat}
+     anchor="bottom"
+     >
+     <ShoppingBasketIcon
+       style={{
+         fontSize: '50px', // ここでアイコンのサイズを調整
+         color: 'tomato', // ここでアイコンの色を設定
+         opacity: 0.4 // 透明度を設定
+       }}
+     />
+     </Marker>
+     )}
     </Map>
 
 
