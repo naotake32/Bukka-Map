@@ -300,6 +300,7 @@ form {
   input {
     border: none;
     border-bottom: 1px solid gray;
+    font-size: 17px;
   }
   
   input::placeholder,

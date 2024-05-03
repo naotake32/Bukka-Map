@@ -253,7 +253,7 @@ function App() {
         initialViewState={{
           latitude: 49.2827,
           longitude: -123.1207,
-          zoom: 10,
+          zoom: 7,
         }}
         style={isMobile ? mapStyleMobile : mapStyleDesktop}
         mapStyle="mapbox://styles/mapbox/streets-v9"
@@ -359,8 +359,8 @@ function App() {
                     onChange={(e) => setPrice(e.target.value)}
                   />
                   <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                    <option value="$">$ (USD)</option>
-                    <option value="¥">¥ (JPY)</option>
+                    <option value="$">$</option>
+                    <option value="¥">¥</option>
                   </select>
                   <label>Store Name</label>
                   <input
