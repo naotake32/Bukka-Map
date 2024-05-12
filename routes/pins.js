@@ -16,12 +16,15 @@ router.post("/",async (req,res)=>{
 })
 
 router.get("/", async (req, res) => {
-    try{
-        const pins = await Pin.find();
-        res.status(200).json(pins);
-    }catch(err){
-        res.status(500).json(err)
+    console.log("Fetching all pins");
+    try {
+      const pins = await Pin.find();
+      console.log("Pins fetched successfully");
+      res.status(200).json(pins);
+    } catch (err) {
+      console.error("Error fetching pins:", err);
+      res.status(500).json(err);
     }
-})
+  });
 
 module.exports = router

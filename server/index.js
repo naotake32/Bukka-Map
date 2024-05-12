@@ -12,7 +12,11 @@ app.use(express.json())
 app.use(cors());
 
 mongoose.connect(process.env.MONGO_URL, () => console.log("DB connected"));
-
+//デバッグ用コード：リクエストとレスポンスをログに記録
+app.use((req, res, next) => {
+    console.log(`Received ${req.method} request from ${req.ip} for ${req.url}`);
+    next();
+  });
 
 app.get("/test", (req,res)=> res.json({msg:"testing...."}))
 app.use("/api/users",userRoute);

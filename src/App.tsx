@@ -6,7 +6,7 @@ import { MapLayerMouseEvent } from 'mapbox-gl';
 import logoImg from "./assets/Bukka-logo-lateral.png";
 import { ViewState } from 'react-map-gl'
 import "../src/App.css";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import {format} from "timeago.js";
 import { BrowserRouter } from 'react-router-dom';
 import LandingPage from "./componetns/LandingPage";// 追加
@@ -66,16 +66,29 @@ function App() {
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [tempPinLocation, setTempPinLocation] = useState<Geoloc | null>(null); // 仮のピンの位置を管理
 
-  useEffect(()=>{
-    const getPins = async ()=> {
-      try{
+  useEffect(() => {
+    const getPins = async () => {
+      try {
+        console.log("Fetching pins from the server...");
         const res = await axios.get("/api/pins");
+        console.log("Pins fetched successfully:", res.data);
         setPins(res.data);
         setFilteredPins(res.data); // 初期ロードで全てのピンを表示
-      }catch(err){
-        console.log(err);
+      } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+          // AxiosErrorの場合、errはAxiosError型であると確定する
+          const axiosError = err as AxiosError;
+          console.error("Failed to fetch pins:", axiosError.message);
+          if (axiosError.response) {
+            console.error("Error response:", axiosError.response.data);
+            console.error("Status code:", axiosError.response.status);
+          }
+        } else {
+          // それ以外のエラー
+          console.error("An unexpected error occurred:", err);
+        }
       }
-    }
+    };
     getPins();
     console.log('Mapbox Access Token:', import.meta.env.VITE_APP_MAPBOX);
 
