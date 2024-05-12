@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const app = express();
@@ -8,6 +9,7 @@ const pinRoute = require("../routes/pins");
 dotenv.config();
 
 app.use(express.json())
+app.use(cors());
 
 mongoose.connect(process.env.MONGO_URL, () => console.log("DB connected"));
 
