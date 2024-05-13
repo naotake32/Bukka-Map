@@ -24,11 +24,11 @@ app.use("/api/pins", pinRoute);
 app.post("pins");
 
 
-// app.listen(3001, () => {
-//     console.log("server is running...");
-// });
-
-
-app.listen(`https://bukka-map-prototype.vercel.app/`, () => {
+app.listen(3001, () => {
     console.log("server is running...");
 });
+
+
+// app.listen(`https://bukka-map-prototype.vercel.app/`, () => {
+//     console.log("server is running...");
+// });
