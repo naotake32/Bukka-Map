@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "server": "nodemon server/index"
+    "server": "nodemon api/index"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
