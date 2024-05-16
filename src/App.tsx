@@ -51,7 +51,7 @@ function App() {
     longitude: -123.1207,
     zoom: 10,
   });
-  const minimumZoom = 15; // このズームレベル以上でないと投稿できないように設定
+  const minimumZoom = 13; // このズームレベル以上でないと投稿できないように設定
   const [currentPlaceId, setCurrentPlaceId] = useState<string | null>(null);
   const [isSale, setIsSale] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -190,9 +190,9 @@ function App() {
 
   const mapStyleMobile: React.CSSProperties = {
     width: '100%',
-    height: '85%',
+    height: '88%',
     position: 'absolute', // 'absolute' など具体的な値にする
-    top: '15%',
+    top: '13%',
     right: '0',
   };
   
@@ -390,11 +390,11 @@ function App() {
                     />
                     <button type="button" onClick={handleAddTag}>Add Tag</button>
                   </div>
-                  <div>
+                  <div className="form-tags-wrapper">
                     {tags.map((tag, index) => (
-                      <div key={index}>
-                        <span>{tag}</span>
-                        <button type="button" onClick={() => handleRemoveTag(index)}>Remove</button>
+                      <div className="form-each-tag" key={index}>
+                          <span className="form-tag">{tag}</span>
+                          <button className="form-tag-remove-button" type="button" onClick={() => handleRemoveTag(index)}>x</button>
                       </div>
                     ))}
                   </div>
