@@ -216,7 +216,7 @@ body {
       z-index: 101;
       width: 100%;
       overflow: scroll;
-      top: 62%;
+      /* top: 62%; */
       transform: none !important;
       height: 40%;
     }
