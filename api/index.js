@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 const path = require("path"); // 追加
 
 const app = express();
-const userRoute = require("./routes/users");
-const pinRoute = require("./routes/pins");
+const userRoute = require("../routes/users");
+const pinRoute = require("../routes/pins");
 
 dotenv.config();
 
