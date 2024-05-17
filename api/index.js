@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const path = require("path"); // 追加
 
 const app = express();
 const userRoute = require("../routes/users");
@@ -24,14 +23,6 @@ app.use((req, res, next) => {
 app.get("/test", (req, res) => res.json({ msg: "testing...." }));
 app.use("/api/users", userRoute);
 app.use("/api/pins", pinRoute);
-
-// 静的ファイルの提供設定
-app.use(express.static(path.join(__dirname, 'public')));
-
-// すべてのその他のリクエストをindex.htmlにリダイレクト
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
