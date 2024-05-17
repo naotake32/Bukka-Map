@@ -28,6 +28,8 @@ app.listen(3001, () => {
     console.log("server is running...");
 });
 
+module.exports = app;
+
 
 // app.listen(`https://bukka-map-prototype.vercel.app/`, () => {
 //     console.log("server is running...");
