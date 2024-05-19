@@ -326,7 +326,36 @@ body {
     display: flex;
     flex-direction: column;
     /* justify-content: space-around; */
-    gap: 5%;
+    word-wrap: break-word; /* 文字が折り返されるようにする */
+}
+
+.card .desc, .card .tags p {
+  white-space: pre-wrap; /* テキストの改行とスペースをそのまま表示 */
+  word-wrap: break-word; /* 文字が折り返されるようにする */
+  margin: 0; /* pタグのデフォルトマージンをリセット */
+  font-size: 11px;
+}
+
+.card .post-detail-tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+}
+
+.card .post-detail-tag {
+  margin: 3px 5px 3px 0;
+  background-color: teal;
+  color: white;
+  border-radius: 30px;
+  padding: 5px;
+  min-width: 55px;
+  text-align: center;
+  font-size: 11px;
+  list-style: none;
 }
 
 label{

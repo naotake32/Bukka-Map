@@ -323,6 +323,12 @@ function App() {
             {pin.price}$
             {pin.isSale && <span style={{ color: "red" }}>(SALE)</span>}
           </p>
+          <label>Tags</label>
+      <ul className="post-detail-tags">
+        {pin.tags.map((tag, index) => (
+          <li className="post-detail-tag" key={index}>{tag}</li>
+        ))}
+      </ul>
           <label>Description</label>
           <p className="desc">{pin.desc}</p>
           <span className="date">{format(pin.createdAt)}</span>
