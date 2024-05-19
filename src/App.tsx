@@ -44,7 +44,7 @@ function App() {
   const [product, setProduct] = useState("");
   const [desc, setDesc] = useState("");
   const [currency, setCurrency] = useState("$");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState<number | string>("");
   const [storeName, setStoreName] = useState("");
   const [viewport, setViewport] = useState({
     latitude: 49.2827,
@@ -114,13 +114,38 @@ function App() {
   const handleAddClick = (e: MapLayerMouseEvent) => {
     console.log("double clicked");
   };
-  //Function to add new tags
-  const handleAddTag = () => {
-    if (!tags.includes(currentTag) && currentTag !== "") {
-      setTags([...tags, currentTag]);
-      setCurrentTag(""); // 入力フィールドをリセット
-    }
-  };
+// Function to add new tags
+const handleAddTag = () => {
+  let tagErrors = [];
+
+  if (currentTag === "") {
+    tagErrors.push("Tag cannot be empty. (タグは空にできません。)");
+  }
+
+  if (tags.includes(currentTag)) {
+    tagErrors.push("Tags must be unique. (タグは重複しないようにしてください。)");
+  }
+
+  if (tags.length >= 3) {
+    tagErrors.push("You can only have up to 3 tags. (タグは3つまでしか入力できません。)");
+  }
+
+  if (!/^[a-zA-Z0-9ぁ-ゔァ-ヴー々〆〤一-龥]+$/.test(currentTag)) {
+    tagErrors.push("Tags can only contain letters, numbers, hiragana, katakana, and kanji without spaces. (タグはスペース無しで、英数字、ひらがな、カタカナ、漢字のみで入力してください。)");
+  }
+
+  if (currentTag.length > 25) {
+    tagErrors.push("Tags must be 25 characters or less. (タグは25文字以内で入力してください。)");
+  }
+
+  if (tagErrors.length > 0) {
+    alert(tagErrors.join('\n'));
+    return;
+  }
+
+  setTags([...tags, currentTag]);
+  setCurrentTag(""); // 入力フィールドをリセット
+};
   //Function to remove tags
   const handleRemoveTag = (index: number) => {
     setTags(tags.filter((_, idx) => idx !== index));
@@ -130,11 +155,51 @@ function App() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    let errors = [];
+
     // 空白チェック
-    if (!product || !price || !desc) {
-      setErrorMessage("All fields must be filled out.");
-      return; // 送信を阻止
+    if (!product) {
+        errors.push("Product name is required. (商品名は必須です。)");
+    } else if (product.length > 30) {
+        errors.push("Product name must be 30 characters or less. (商品名は30文字以内で入力してください。)");
     }
+
+    if (!price) {
+      errors.push("Price is required. (価格は必須です。)");
+    } else if (typeof price === "number" && price < 0) {
+      errors.push("Price must be a positive number. (価格は正の数でなければなりません。)");
+    }
+
+    if (tags.length > 3) {
+        errors.push("You can only have up to 3 tags. (タグは3つまでしか入力できません。)");
+    }
+
+    if (!tags.every(tag => /^[a-zA-Z0-9ぁ-ゔァ-ヴー々〆〤一-龥]+$/.test(tag))) {
+        errors.push("Tags can only contain letters, numbers, hiragana, katakana, and kanji. (タグは英数字、ひらがな、カタカナ、漢字のみで入力してください。)");
+    }
+
+    if (new Set(tags).size !== tags.length) {
+        errors.push("Tags must be unique. (タグは重複しないようにしてください。)");
+    }
+
+    if (!tags.every(tag => tag.length <= 25)) {
+        errors.push("Tags must be 25 characters or less. (タグは25文字以内で入力してください。)");
+    }
+
+    if (desc) {
+        const halfWidth = desc.replace(/[^\x00-\x7F]/g, '').length; // 半角文字の数
+        const fullWidth = desc.length - halfWidth; // 全角文字の数
+        if (halfWidth > 200 || fullWidth > 100) {
+            errors.push("Description must be 200 half-width characters or 100 full-width characters or less. (説明文は半角200文字以内または全角100文字以内で入力してください。)");
+        }
+    }
+
+    if (errors.length > 0) {
+        setErrorMessage(errors.join('\n'));
+        alert(errors.join('\n'));
+        return; // 送信を阻止
+    }
+
   
     const formattedPrice = `${currency}${price}`; // 価格情報に通貨記号を追加
 
@@ -373,9 +438,10 @@ function App() {
                   />
                   <label>Price</label>
                   <input
+                    type="number"
                     placeholder="Enter a price"
-                    autoFocus
-                    onChange={(e) => setPrice(e.target.value)}
+                    value={price}
+                    onChange={(e) => setPrice(parseFloat(e.target.value))}
                   />
                   <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
                     <option value="$">$</option>
@@ -409,7 +475,7 @@ function App() {
                     placeholder="Explain about this product."
                     onChange={(e) => setDesc(e.target.value)}
                   />
-                  {errorMessage && <div className="error-message">{errorMessage}</div>} 
+                  {/* {errorMessage && <div className="error-message">{errorMessage}</div>}  */}
                   <button type="submit" className="submitButton">
                     Add Pin
                   </button>

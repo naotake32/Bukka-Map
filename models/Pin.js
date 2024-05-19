@@ -3,71 +3,74 @@ const mongoose = require("mongoose");
 const PinSchema = new mongoose.Schema({
     username: {
         type: String,
-        require: true,
+        required: true,
         min: 3
     },
     product: {
         type: String,
-        require: true,
-        min:3
+        required: [true, 'Product name is required'],
+        maxlength: [30, 'Product name must be 30 characters or less']
     },
     tags: {
         type: [String],
         validate: [
-            { validator: tagLimit, message: '{PATH} exceeds the limit of 3' },
-            { validator: validateTags, message: '{PATH} must only contain uppercase alphabets' },
-            { validator: validateUniqueTags, message: '{PATH} must contain only unique tags' }
-        ]
+            { validator: tagLimit, message: 'You can only have up to 3 tags' },
+            { validator: validateTags, message: 'Tags can only contain letters, numbers, hiragana, katakana, and kanji' },
+            { validator: validateUniqueTags, message: 'Tags must be unique' },
+            { validator: tagLength, message: 'Tags must be 25 characters or less' }
+        ],
+        default: [] // デフォルト値を空の配列に設定
     },
     desc: {
         type: String,
-        require: true,
-        min: 3
+        validate: {
+            validator: descValidator,
+            message: 'Description must be 200 half-width characters or 100 full-width characters or less'
+        },
+        required: false // Description is optional
     },
     isSale: {
         type: Boolean,
-        require: true,
+        required: true,
         default: false
     },
     currency: {
         type: String,
         required: true,
-        enum: ['$', '¥'] // 通貨の種類を限定
+        enum: ['$', '¥'] // Limit the types of currency
     },
-    price:{
+    price: {
         type: Number,
-        require: true,
-        min: 0,
+        required: [true, 'Price is required'],
+        min: [0, 'Price must be a positive number']
     },
     storeName: { 
         type: String, 
-        required: true, 
-        min: 3 
+        maxlength: [30, 'Store name must be 30 characters or less'],
+        required: false // Store name is optional
     }, 
-    lat:{
+    lat: {
         type: Number,
-        require: true,
+        required: true
     },
-    long:{
+    long: {
         type: Number,
-        require: true,
+        required: true
     },
     image: {
         type: String,
-        required: false  // 画像は必須ではない
+        required: false // Image is not required
     },
-},{ timestamps: true }
-);
+}, { timestamps: true });
 
 // Helper function to validate the number of tags
-// val.length <= 5 will be true or false depends on the val below 
 function tagLimit(val) {
     return val.length <= 3;
 }
 
-// Validate that each tag contains only uppercase alphabets
+// Validate that each tag meets the specified criteria
 function validateTags(val) {
-    return val.every(tag => /^[A-Z]+$/.test(tag));
+    return val.every(tag => /^[a-zA-Z0-9ぁ-ゔァ-ヴー々〆〤一-龥]+$/.test(tag));
 }
 
 // Validate that each tag is unique within the array
@@ -76,4 +79,16 @@ function validateUniqueTags(val) {
     return uniqueTags.size === val.length;
 }
 
-module.exports = mongoose.model("Pin",PinSchema);
+// Validate that each tag is 25 characters or less
+function tagLength(val) {
+    return val.every(tag => tag.length <= 25);
+}
+
+// Validate description length
+function descValidator(val) {
+    const halfWidth = val.replace(/[^\x00-\x7F]/g, '').length; // Count half-width characters
+    const fullWidth = val.length - halfWidth; // Count full-width characters
+    return halfWidth <= 200 && fullWidth <= 100;
+}
+
+module.exports = mongoose.model("Pin", PinSchema);
