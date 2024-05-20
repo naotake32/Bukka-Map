@@ -424,36 +424,36 @@ const handleAddTag = () => {
     >
          <div>
                 <form onSubmit={handleSubmit}>
-                  <label>Product Name</label>
+                  <label>Product Name(Required)</label>
                   <input
                     placeholder="Enter the product name"
                     autoFocus
                     onChange={(e) => setProduct(e.target.value)}
                   />
-                  <label>Sale</label>
+                  <label>Sale(Optional)</label>
                   <input
                     type="checkbox"
                     checked={isSale}
                     onChange={(e) => setIsSale(e.target.checked)}
                   />
-                  <label>Price</label>
+                  <label>Price(Required)</label>
                   <input
                     type="number"
                     placeholder="Enter a price"
                     value={price}
                     onChange={(e) => setPrice(parseFloat(e.target.value))}
                   />
-                  <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
+                  <select className="currency-select" value={currency} onChange={(e) => setCurrency(e.target.value)}>
                     <option value="$">$</option>
                     <option value="¥">¥</option>
                   </select>
-                  <label>Store Name</label>
+                  <label>Store Name(Optional)</label>
                   <input
                     placeholder="Enter store name"
                     autoFocus
                     onChange={(e) => setStoreName(e.target.value)}
                   />
-                  <label>Tags</label>
+                  <label>Tags(Optional)</label>
                   <div>
                     <input
                       value={currentTag}
@@ -470,7 +470,7 @@ const handleAddTag = () => {
                       </div>
                     ))}
                   </div>
-                  <label>Description</label>
+                  <label>Description(Optional)</label>
                   <textarea
                     placeholder="Explain about this product."
                     onChange={(e) => setDesc(e.target.value)}

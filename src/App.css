@@ -361,7 +361,7 @@ body {
 label{
     width: max-content;
     color: teal;
-    font-size: 13px;
+    font-size: 14px;
     border-bottom: 0.5px solid teal;
     margin: 3px 0;
 }
@@ -430,6 +430,10 @@ form {
     color: white;
     cursor: pointer;
     width: 24px;
+  }
+
+  form .currency-select {
+    font-size: 15px;
   }
 
 
