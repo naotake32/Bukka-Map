@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLanguage } from '../Contexts/LanguageContext';
 
 type SearchBarProps = {
   setSearchProduct: (productName: string) => void;
@@ -7,14 +8,31 @@ type SearchBarProps = {
   clearSearch: () => void;
 };
 
+const translations = {
+  en: {
+    searchProducts: "Search products...",
+    searchTags: "Search by tags...",
+    search: "Search",
+    clear: "Clear"
+  },
+  jp: {
+    searchProducts: "商品検索...",
+    searchTags: "タグで検索...",
+    search: "検索",
+    clear: "クリア"
+  }
+};
+
 const SearchBar: React.FC<SearchBarProps> = ({ setSearchProduct, setSearchTag, handleSearch, clearSearch }) => {
   const [productName, setProductName] = useState("");
   const [tag, setTag] = useState("");
+  const { language } = useLanguage();
+  const { searchProducts, searchTags, search, clear } = translations[language];
 
   const handleClear = () => {
-    setProductName(""); // プロダクト名のステートをクリア
-    setTag("");         // タグのステートをクリア
-    clearSearch();      // 上位コンポーネントのクリア処理を呼び出し
+    setProductName("");
+    setTag("");
+    clearSearch();
   };
 
   return (
@@ -23,24 +41,24 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSearchProduct, setSearchTag, h
         type="text"
         value={productName}
         onChange={(e) => {
-          setProductName(e.target.value); // ローカルステートを更新
-          setSearchProduct(e.target.value); // 上位コンポーネントのステートを更新
+          setProductName(e.target.value);
+          setSearchProduct(e.target.value);
         }}
-        placeholder="Search products..."
+        placeholder={searchProducts}
         className="search-bar"
       />
       <input
         type="text"
         value={tag}
         onChange={(e) => {
-          setTag(e.target.value); // ローカルステートを更新
-          setSearchTag(e.target.value); // 上位コンポーネントのステートを更新
+          setTag(e.target.value);
+          setSearchTag(e.target.value);
         }}
-        placeholder="Search by tags..."
+        placeholder={searchTags}
         className="search-bar"
       />
-      <button onClick={handleSearch}>Search</button>
-      <button onClick={handleClear}>Clear</button>
+      <button onClick={handleSearch}>{search}</button>
+      <button onClick={handleClear}>{clear}</button>
     </div>
   );
 };
