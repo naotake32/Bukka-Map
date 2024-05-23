@@ -15,6 +15,7 @@ import { point } from '@turf/helpers';
 import distance from '@turf/distance';
 import { useLanguage } from './Contexts/LanguageContext';  // 修正
 import "../src/App.css";
+import Modal from "./componetns/Modal"; // 追加
 // import { ViewState } from 'react-map-gl'
 // import LandingPage from "./components/LandingPage";
 
@@ -98,6 +99,8 @@ function App() {
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [tempPinLocation, setTempPinLocation] = useState<Geoloc | null>(null); // 投稿前の仮ピンの位置を管理
   const { language, setLanguage } = useLanguage();
+  const [showModal, setShowModal] = useState(false); // モーダルの表示状態を管理
+  const [modalMessage, setModalMessage] = useState(""); // モーダルのメッセージを管理
 
   useEffect(() => {
     const getPins = async () => {
@@ -143,32 +146,33 @@ function App() {
 // Function to add new tags
   const handleAddTag = () => {
     let tagErrors = [];
-
+  
     if (currentTag === "") {
       tagErrors.push("Tag cannot be empty. (タグは空にできません。)");
     }
-
+  
     if (tags.includes(currentTag)) {
       tagErrors.push("Tags must be unique. (タグは重複しないようにしてください。)");
     }
-
+  
     if (tags.length >= 3) {
       tagErrors.push("You can only have up to 3 tags. (タグは3つまでしか入力できません。)");
     }
-
+  
     if (!/^[a-zA-Z0-9ぁ-ゔァ-ヴー々〆〤一-龥]+$/.test(currentTag)) {
       tagErrors.push("Tags can only contain letters, numbers, hiragana, katakana, and kanji without spaces. (タグはスペース無しで、英数字、ひらがな、カタカナ、漢字のみで入力してください。)");
     }
-
+  
     if (currentTag.length > 25) {
       tagErrors.push("Tags must be 25 characters or less. (タグは25文字以内で入力してください。)");
     }
-
+  
     if (tagErrors.length > 0) {
-      alert(tagErrors.join('\n'));
+      setModalMessage(tagErrors.join('\n'));
+      setShowModal(true);
       return;
     }
-
+  
     setTags([...tags, currentTag]);
     setCurrentTag(""); // 入力フィールドをリセット
   };
@@ -177,13 +181,13 @@ function App() {
       setTags(tags.filter((_, idx) => idx !== index));
     };
   
-    //pinを追加する処理
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-  
-      let errors = [];
-  
-      // 空白チェック
+  // pinを追加する処理
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    let errors = [];
+
+    // 空白チェック
     if (!product) {
       errors.push("Product name is required. (商品名は必須です。)");
     } else if (product.length > 30) {
@@ -222,7 +226,8 @@ function App() {
 
     if (errors.length > 0) {
       setErrorMessage(errors.join('\n'));
-      alert(errors.join('\n'));
+      setModalMessage(errors.join('\n'));
+      setShowModal(true);
       return; // 送信を阻止
     }
 
@@ -258,12 +263,14 @@ function App() {
     const { lng, lat } = e.lngLat;
     const currentZoom = e.target.getZoom();
     if (currentZoom < minimumZoom) {
-      alert("Please zoom in further to post.");
+      setModalMessage("Please zoom in further to post.");
+      setShowModal(true);
       return;
     }
     setNewPlace({ long: lng, lat: lat });
     setTempPinLocation({ long: lng, lat: lat });
   };
+
  //デバッグ用に新しいnewPlaceの値をチェックする関数
   useEffect(() => {
   }, [newPlace]);
@@ -327,6 +334,7 @@ function App() {
   const { productNameLabel, storeNameLabel, priceLabel, tagsLabel, descriptionLabel, postedByLabel, saleLabel } = translations[language];
 
   return (
+    <>
       <BrowserRouter>
         <section>
           <div className="title-search">
@@ -537,6 +545,14 @@ function App() {
           </button>
         </section>
       </BrowserRouter>
+      
+      {/* モーダルを表示 */}
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        message={modalMessage}
+      />
+    </>
   );
 }
 
