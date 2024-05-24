@@ -6,9 +6,10 @@ type ModalProps = {
   show: boolean;
   onClose: () => void;
   message: string;
+  isError: boolean; // エラーかどうかのフラグを追加
 };
 
-const Modal: React.FC<ModalProps> = ({ show, onClose, message }) => {
+const Modal: React.FC<ModalProps> = ({ show, onClose, message, isError }) => {
   if (!show) {
     return null;
   }
@@ -16,8 +17,13 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, message }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Error</h2>
-        <p>{message}</p>
+        {isError && <h2>Error</h2>}
+        <p className={isError ? "error-message" : "normal-message"}>{message.split('\n').map((line, index) => (
+          <React.Fragment key={index}>
+            {line}
+            <br />
+          </React.Fragment>
+        ))}</p>
         <button onClick={onClose}>OK</button>
       </div>
     </div>
