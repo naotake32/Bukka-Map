@@ -547,11 +547,12 @@ function App() {
       </BrowserRouter>
       
       {/* モーダルを表示 */}
-      <Modal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        message={modalMessage}
-      />
+    <Modal
+      show={showModal}
+      onClose={() => setShowModal(false)}
+      message={modalMessage}
+      isError={modalMessage !== "Please zoom in further to post."}
+    />
     </>
   );
 }

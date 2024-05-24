@@ -27,7 +27,14 @@
   
   .modal-content p {
     margin: 20px 0;
+  }
+
+  .error-message {
     color: red;
+  }
+  
+  .normal-message {
+    color: black;
   }
   
   .modal-content button {
