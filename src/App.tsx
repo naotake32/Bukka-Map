@@ -263,7 +263,7 @@ function App() {
     const { lng, lat } = e.lngLat;
     const currentZoom = e.target.getZoom();
     if (currentZoom < minimumZoom) {
-      setModalMessage("Please zoom in further to post.");
+      setModalMessage("Please zoom in further to post.(投稿するにはさらにズームして下さい。)");
       setShowModal(true);
       return;
     }
@@ -551,7 +551,7 @@ function App() {
       show={showModal}
       onClose={() => setShowModal(false)}
       message={modalMessage}
-      isError={modalMessage !== "Please zoom in further to post."}
+      isError={modalMessage !== "Please zoom in further to post.(投稿するにはさらにズームして下さい。)"}
     />
     </>
   );
