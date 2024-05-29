@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const PinSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
+        required: false,
         min: 3
     },
     product: {
