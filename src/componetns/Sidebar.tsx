@@ -28,16 +28,17 @@ type SidebarProps = {
 
 const translations = {
   en: {
-    posts: "Posts",
+    posts: "Recent Posts",
     store: "Store",
     sale: "(SALE)"
   },
   jp: {
-    posts: "投稿",
+    posts: "最近の投稿",
     store: "店舗",
     sale: "(セール)"
   }
 };
+
 
 const Sidebar: React.FC<SidebarProps> = ({ pins, onPostClick, highlightedPin }) => {
   const { language } = useLanguage();
