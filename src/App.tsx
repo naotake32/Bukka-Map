@@ -47,8 +47,8 @@ const translations = {
     tagsLabel: "Tags",
     descriptionLabel: "Description",
     postedByLabel: "Posted by",
-    searchProductsLabel: "Search products...",
-    searchTagsLabel: "Search by tags...",
+    searchProductsLabel: "Search posts by product name",
+    searchTagsLabel: "Search posts by tag",
     searchLabel: "Search",
     clearLabel: "Clear",
     saleLabel: "(SALE)"
@@ -60,8 +60,8 @@ const translations = {
     tagsLabel: "タグ",
     descriptionLabel: "説明",
     postedByLabel: "投稿者",
-    searchProductsLabel: "商品検索...",
-    searchTagsLabel: "タグで検索...",
+    searchProductsLabel: "投稿を商品名で検索",
+    searchTagsLabel: "投稿をタグで検索",
     searchLabel: "検索",
     clearLabel: "クリア",
     saleLabel: "(セール)"

@@ -10,18 +10,19 @@ type SearchBarProps = {
 
 const translations = {
   en: {
-    searchProducts: "Search products...",
-    searchTags: "Search by tags...",
+    searchProducts: "Search posts by product name",
+    searchTags: "Search posts by tag",
     search: "Search",
     clear: "Clear"
   },
   jp: {
-    searchProducts: "商品検索...",
-    searchTags: "タグで検索...",
+    searchProducts: "投稿を商品名で検索",
+    searchTags: "投稿をタグで検索",
     search: "検索",
     clear: "クリア"
   }
 };
+
 
 const SearchBar: React.FC<SearchBarProps> = ({ setSearchProduct, setSearchTag, handleSearch, clearSearch }) => {
   const [productName, setProductName] = useState("");
