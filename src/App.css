@@ -241,7 +241,7 @@ body {
 
   .post-item {
     flex: 0 0 auto;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     border-bottom: none;
     width: 18rem;
     height: 255px;
