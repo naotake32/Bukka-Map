@@ -31,6 +31,11 @@ console.log('__dirname:', __dirname);
 // Serve static files from the dist directory
 app.use(express.static(path.join(__dirname, "..", "dist")));
 
+// Serve sitemap.xml from the root directory
+app.get('/sitemap.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "sitemap.xml"));
+});
+
 // Fallback to index.html for any non-API routes
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
