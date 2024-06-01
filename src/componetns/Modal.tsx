@@ -1,4 +1,3 @@
-// components/Modal.tsx
 import React from "react";
 import "./Modal.css";
 
@@ -6,7 +5,7 @@ type ModalProps = {
   show: boolean;
   onClose: () => void;
   message: string;
-  isError: boolean; // エラーかどうかのフラグを追加
+  isError: boolean; // エラーかどうかのフラグ
 };
 
 const Modal: React.FC<ModalProps> = ({ show, onClose, message, isError }) => {

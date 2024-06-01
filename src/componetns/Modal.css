@@ -1,47 +1,55 @@
-/* components/Modal.css */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-  }
-  
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 400px;
-    width: 80%;
-    text-align: center;
-  }
-  
-  .modal-content h2 {
-    margin-top: 0;
-  }
-  
-  .modal-content p {
-    margin: 20px 0;
-  }
 
-  .error-message {
-    color: red;
-  }
-  
-  .normal-message {
-    color: black;
-  }
-  
-  .modal-content button {
-    padding: 10px 20px;
-    border: none;
-    background: teal;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-  }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 80%;
+  text-align: center;
+  max-height: 80%; /* 最大高さを設定 */
+  overflow-y: auto; /* 縦方向のスクロールを有効にする */
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.modal-message {
+  max-height: calc(80vh - 120px); /* モーダル全体の高さから適当な値を引いて調整 */
+  overflow-y: auto;
+  text-align: center;
+}
+
+.modal-content p {
+  margin: 20px 0;
+}
+
+.error-message {
+  color: red;
+}
+
+.normal-message {
+  color: black;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  border: none;
+  background: teal;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}

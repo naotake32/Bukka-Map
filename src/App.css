@@ -67,6 +67,7 @@ body {
     color: white;
     margin: 0 5px;
     border: none;
+    cursor: pointer;
 }
 
 .search-bar {
@@ -552,4 +553,41 @@ form {
   
   .register{
     background-color: slateblue;
+  }
+  .button-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 100px;
+  }
+  
+  .button-container.mobile {
+    top: 13%;
+    left: 0px;
+}
+  
+  .contact-button, .help-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .button-container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 56px;
+    }
+
+    .contact-button, .help-button {
+      margin: 0px;
+      padding: 0 2px;
+    }
+  }
+  
+  .contact-button svg, .help-button svg {
+    font-size: 24px;
+    color: #333;
   }
