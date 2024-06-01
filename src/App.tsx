@@ -1,6 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import EmailIcon from '@mui/icons-material/Email';
+import HelpIcon from '@mui/icons-material/Help';
 import Map, { Marker, Popup } from 'react-map-gl';
 import { MapLayerMouseEvent } from 'mapbox-gl';
 import logoImg from "./assets/Bukka-logo-lateral.png";
@@ -13,11 +15,9 @@ import Sidebar from "./componetns/Sidebar";
 import SearchBar from "./componetns/SearchBar";
 import { point } from '@turf/helpers';
 import distance from '@turf/distance';
-import { useLanguage } from './Contexts/LanguageContext';  // 修正
+import { useLanguage } from './Contexts/LanguageContext';
 import "../src/App.css";
-import Modal from "./componetns/Modal"; // 追加
-// import { ViewState } from 'react-map-gl'
-// import LandingPage from "./components/LandingPage";
+import Modal from "./componetns/Modal";
 
 type Pin = {
   _id: string;
@@ -51,7 +51,23 @@ const translations = {
     searchTagsLabel: "Search posts by tag",
     searchLabel: "Search",
     clearLabel: "Clear",
-    saleLabel: "(SALE)"
+    saleLabel: "(SALE)",
+    contactText: "For inquiries, please contact us at bukkamap.contact@gmail.com.",
+    helpText: `Find the best deal in your city!
+    
+    How to use Bukka Map (Price Map)
+    
+    1. Posting Price Information Pins
+    
+    Zoom in on the map and click on a point to open the price information submission form. The form requires the product name and price as mandatory fields. Fill in the form and click the "Add" button at the bottom to add a pin to the map. If an error occurs during submission, a modal will be displayed.
+    
+    2. Viewing Posted Pins
+    
+    On a PC screen, user posts are displayed in the left sidebar, and on a smartphone screen, they are shown at the bottom of the screen in order of newest to oldest. Tapping, clicking, or hovering over a post in the list will highlight the corresponding pin in yellow on the map. You can also view the details of a post by clicking or tapping directly on the pin on the map. The description of the post is only displayed when you touch the pin directly, and it will not appear in the sidebar. On a smartphone screen, you can toggle the visibility of the sidebar by tapping the arrow button in the upper left corner.
+    
+    3. Search Function
+    
+    You can search posts by product name or tag name using the search box at the top of the screen. The search is conducted within a 50km radius from the center point of the map. Clicking the "Clear" button will reset the search results displayed on the map and in the sidebar, showing all posts again, and the search keyword in the search box will be cleared.`
   },
   jp: {
     productNameLabel: "商品名",
@@ -64,14 +80,30 @@ const translations = {
     searchTagsLabel: "投稿をタグで検索",
     searchLabel: "検索",
     clearLabel: "クリア",
-    saleLabel: "(セール)"
+    saleLabel: "(セール)",
+    contactText: "お問い合わせの際は bukkamap.contact@gmail.com までご連絡ください。",
+    helpText: `あなたの街の"一番お得"を見つけよう！
+
+    Bukka Map物価マップ機能説明
+    
+    1. 価格情報ピンの投稿
+    
+    地図をズームし、地図上の1点をクリックすると、物価情報の投稿フォームが表示されます。商品名と価格は必須項目です。フォームを入力し、一番下の「追加」ボタンを押すと、地図上にピンが追加されます。送信時にエラーが発生した場合は、モーダルが表示されます。
+    
+    2. 投稿したピンの情報を閲覧
+    
+    PC画面では画面左側に、スマホ画面では画面の下側に、ユーザーの投稿が新着順に表示されます。投稿一覧バー内の各投稿をタップ、クリック、またはマウスホバーすると、該当するピンが黄色くハイライトされます。地図上のピンを直接クリックまたはタップすることでも投稿の詳細を確認できます。投稿の説明文はピンを直接タッチした時のみ表示され、バーには表示されません。スマホ画面では、バーの左上にある矢印ボタンをタップすると、バーの表示・非表示を切り替えることができます。
+    
+    3. 検索機能
+    
+    画面上部の検索窓で、商品名・タグ名に基づいて投稿を検索することができます。検索は地図の中心点から半径50kmの範囲で行われます。「クリア」ボタンを押すと、地図およびバーに表示されている検索結果がリセットされ、再び全ての投稿が表示されます。また、検索窓の検索ワードもクリアされます。`
   }
 };
 
 function App() {
   const myStorage = window.localStorage;
   const [currentUser, setCurrentUser] = useState(myStorage.getItem("user"));
-  const [showPopup, setShowPopup] = React.useState(true);
+  const [showPopup, setShowPopup] = useState(true);
   const [pins, setPins] = useState<Pin[]>([]);
   const [newPlace, setNewPlace] = useState<Geoloc>();
   const [product, setProduct] = useState("");
@@ -101,6 +133,7 @@ function App() {
   const { language, setLanguage } = useLanguage();
   const [showModal, setShowModal] = useState(false); // モーダルの表示状態を管理
   const [modalMessage, setModalMessage] = useState(""); // モーダルのメッセージを管理
+  const [modalType, setModalType] = useState<"contact" | "help" | "error" | "zoom">("error");
 
   useEffect(() => {
     const getPins = async () => {
@@ -135,52 +168,51 @@ function App() {
     };
   }, []);
 
-  const handleMarkerClick = (id: string, lat: number, long: number)=>{
-    console.log(id);
-    setCurrentPlaceId(id)
+  const handleMarkerClick = (id: string, lat: number, long: number) => {
+    setCurrentPlaceId(id);
     setShowPopup(true);
     setViewport({...viewport, latitude: lat, longitude: long})
     setTempPinLocation(null); // 仮のピンの位置をリセット
-    console.log(viewport);
   };
 // Function to add new tags
   const handleAddTag = () => {
     let tagErrors = [];
-  
+
     if (currentTag === "") {
       tagErrors.push("Tag cannot be empty. (タグは空にできません。)");
     }
-  
+
     if (tags.includes(currentTag)) {
       tagErrors.push("Tags must be unique. (タグは重複しないようにしてください。)");
     }
-  
+
     if (tags.length >= 3) {
       tagErrors.push("You can only have up to 3 tags. (タグは3つまでしか入力できません。)");
     }
-  
+
     if (!/^[a-zA-Z0-9ぁ-ゔァ-ヴー々〆〤一-龥]+$/.test(currentTag)) {
       tagErrors.push("Tags can only contain letters, numbers, hiragana, katakana, and kanji without spaces. (タグはスペース無しで、英数字、ひらがな、カタカナ、漢字のみで入力してください。)");
     }
-  
+
     if (currentTag.length > 25) {
       tagErrors.push("Tags must be 25 characters or less. (タグは25文字以内で入力してください。)");
     }
-  
+
     if (tagErrors.length > 0) {
       setModalMessage(tagErrors.join('\n'));
+      setModalType("error");
       setShowModal(true);
       return;
     }
-  
+
     setTags([...tags, currentTag]);
     setCurrentTag(""); // 入力フィールドをリセット
   };
     //Function to remove tags
-    const handleRemoveTag = (index: number) => {
-      setTags(tags.filter((_, idx) => idx !== index));
-    };
-  
+  const handleRemoveTag = (index: number) => {
+    setTags(tags.filter((_, idx) => idx !== index));
+  };
+
   // pinを追加する処理
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -227,6 +259,7 @@ function App() {
     if (errors.length > 0) {
       setErrorMessage(errors.join('\n'));
       setModalMessage(errors.join('\n'));
+      setModalType("error");
       setShowModal(true);
       return; // 送信を阻止
     }
@@ -264,6 +297,7 @@ function App() {
     const currentZoom = e.target.getZoom();
     if (currentZoom < minimumZoom) {
       setModalMessage("Please zoom in further to post.(投稿するにはさらにズームして下さい。)");
+      setModalType("zoom");
       setShowModal(true);
       return;
     }
@@ -327,11 +361,19 @@ function App() {
 
   const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
-  useEffect(() => {
-    console.log("Viewport changed:", viewport);
-  }, [viewport]);
+  const { productNameLabel, storeNameLabel, priceLabel, tagsLabel, descriptionLabel, postedByLabel, saleLabel, contactText, helpText } = translations[language];
 
-  const { productNameLabel, storeNameLabel, priceLabel, tagsLabel, descriptionLabel, postedByLabel, saleLabel } = translations[language];
+  const handleContactClick = () => {
+    setModalMessage(contactText);
+    setModalType("contact");
+    setShowModal(true);
+  };
+
+  const handleHelpClick = () => {
+    setModalMessage(helpText);
+    setModalType("help");
+    setShowModal(true);
+  };
 
   return (
     <>
@@ -402,7 +444,6 @@ function App() {
                     onClick={() => handleMarkerClick(pin._id, pin.lat, pin.long)}
                   />
                 </Marker>
-                {/* show popup */}
                 {pin._id === currentPlaceId && showPopup && (
                   <Popup
                     longitude={pin.long}
@@ -543,19 +584,25 @@ function App() {
           <button className={`toggle-button ${sidebarVisible ? "visible" : ""}`} onClick={toggleSidebar}>
             {sidebarVisible ? '▼' : '▲'}
           </button>
+          <div className={`button-container ${isMobile ? "mobile" : ""}`}>
+            <button className="contact-button" onClick={handleContactClick}>
+              <EmailIcon />
+            </button>
+            <button className="help-button" onClick={handleHelpClick}>
+              <HelpIcon />
+            </button>
+          </div>
         </section>
       </BrowserRouter>
-      
       {/* モーダルを表示 */}
-    <Modal
-      show={showModal}
-      onClose={() => setShowModal(false)}
-      message={modalMessage}
-      isError={modalMessage !== "Please zoom in further to post.(投稿するにはさらにズームして下さい。)"}
-    />
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        message={modalMessage}
+        isError={modalType === "error"}
+      />
     </>
   );
 }
-
 
 export default App;
