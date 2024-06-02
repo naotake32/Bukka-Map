@@ -52,7 +52,7 @@ const translations = {
     searchLabel: "Search",
     clearLabel: "Clear",
     saleLabel: "(SALE)",
-    contactText: "For inquiries, please contact us at bukkamap.contact@gmail.com.",
+    contactText: "For inquiries, please contact us at bukka_map_contact@yahoo.co.jp.",
     helpText: `Find the best deal in your city!
     
     How to use Bukka Map (Price Map)
@@ -81,7 +81,7 @@ const translations = {
     searchLabel: "検索",
     clearLabel: "クリア",
     saleLabel: "(セール)",
-    contactText: "お問い合わせの際は bukkamap.contact@gmail.com までご連絡ください。",
+    contactText: "お問い合わせの際は bukka_map_contact@yahoo.co.jp までご連絡ください。",
     helpText: `あなたの街の"一番お得"を見つけよう！
 
     Bukka Map物価マップ機能説明
