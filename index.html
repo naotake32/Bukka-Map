@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="./src/assets/Bukka-logo-icon.png" />
+    <link rel="apple-touch-icon" href="./src/assets/Bukka-logo-icon.png">
+    <link rel="image_src" href="./src/assets/Bukka-logo-icon.png">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- English Meta Tags -->
@@ -15,16 +17,17 @@
     <!-- Open Graph Tags -->
     <meta property="og:title" content="Bukka Map(Price Map)">
     <meta property="og:description" content="Bukka Map (Price Map) enables you to compare prices. It's a service where you can compare the prices of goods on a map. Post and share the prices of groceries and various other items with other users.">
-    <meta property="og:image" content="https://bukka-map.com/path/to/image.jpg"> <!-- 仮のURL -->
+    <meta property="og:image" content="./src/assets/Bukka-logo-icon.png">
     <meta property="og:url" content="https://bukka-map.com/">
     <meta property="og:type" content="website">
     <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Bukka Map(Price Map)">
     <meta name="twitter:description" content="Bukka Map (Price Map) enables you to compare prices. It's a service where you can compare the prices of goods on a map. Post and share the prices of groceries and various other items with other users.">
-    <meta name="twitter:image" content="https://bukka-map.com/path/to/image.jpg"> <!-- 正しい画像URLに置き換え -->
+    <meta name="twitter:image" content="./src/assets/Bukka-logo-icon.png">
     <meta name="twitter:url" content="https://bukka-map.com/">
-    <!-- <meta name="twitter:image" content="https://yourwebsite.com/path/to/image.jpg"> 仮のURL -->
+    <!-- Thumbnail Meta Tag -->
+    <meta name="thumbnail" content="./src/assets/Bukka-logo-icon.png" />
     <!-- Canonical Link -->
     <link rel="canonical" href="https://bukka-map.com/">
     <!-- Google Analytics 4 -->
@@ -33,7 +36,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-796GV8XHT0');
     </script>
     <!-- End Google Analytics 4 -->
