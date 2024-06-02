@@ -526,6 +526,8 @@ function App() {
                     <select className="currency-select" value={currency} onChange={(e) => setCurrency(e.target.value)}>
                       <option value="$">$</option>
                       <option value="¥">¥</option>
+                      <option value="€">€</option>
+                      <option value="£">£</option>
                     </select>
                     <label>{storeNameLabel} ({language === 'en' ? 'Optional' : '任意'})</label>
                     <input

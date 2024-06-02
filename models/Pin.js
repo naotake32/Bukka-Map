@@ -37,7 +37,7 @@ const PinSchema = new mongoose.Schema({
     currency: {
         type: String,
         required: true,
-        enum: ['$', '¥'] // Limit the types of currency
+        enum: ['$', '¥', '€', '£'] // Limit the types of currency
     },
     price: {
         type: Number,
