@@ -21,6 +21,14 @@ mongoose
   .then(() => console.log("DB connected"))
   .catch((err) => console.error("DB connection error: ", err));
 
+// リダイレクトの設定を追加
+app.use((req, res, next) => {
+  if (req.headers.host === 'bukka-map.onrender.com') {
+    return res.redirect(301, 'https://bukka-map.com' + req.url);
+  }
+  next();
+});
+
 app.get("/test", (req, res) => res.json({ msg: "testing...." }));
 app.use("/api/users", userRoute);
 app.use("/api/pins", pinRoute);
