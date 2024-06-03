@@ -414,7 +414,7 @@ function App() {
             initialViewState={{
               latitude: 49.2827,
               longitude: -123.1207,
-              zoom: 7,
+              zoom: 4,
             }}
             style={isMobile ? mapStyleMobile : mapStyleDesktop}
             mapStyle="mapbox://styles/mapbox/streets-v9"
